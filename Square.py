@@ -6,5 +6,6 @@ class Square:
         self.y1 = y1
         self.x2 = x2 + 10
         self.y2 = y2 + 10
-        self.width = 180
-        self.height = 180
+        self.blank_color = (206, 192, 181)
+        self.color = (12, 56, 213)
+        self.value = 0
