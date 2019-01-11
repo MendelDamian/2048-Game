@@ -28,13 +28,13 @@ def check_lose():
 
 
 def random_field():
-    field = randint(0, 15)
+    field = randint(0, size*size-1)
     while True:
         if not squares[field].value:
             squares[field].value = 2
             break
         else:
-            field = randint(0, 15)
+            field = randint(0, size*size-1)
 
 
 random_field()
@@ -44,9 +44,10 @@ while True:
         random_field()
 
     for i in range(size*size):
-        pygame.draw.rect(screen.screen, squares[i].blank_color, [squares[i].x1, squares[i].y1,
-                                                                 squares[i].x2, squares[i].y2])
-        if squares[i].value != 0:
+        squares[i].update_color()
+        pygame.draw.rect(screen.screen, squares[i].color, [squares[i].x1, squares[i].y1,
+                                                           squares[i].x2, squares[i].y2])
+        if squares[i].value:
             screen.message_display(text=str(squares[i].value), x=(2*squares[i].x1+squares[i].x2)/2,
                                    y=(2*squares[i].y1+squares[i].y2)/2, font_size=50, color=(0, 0, 0))
 
