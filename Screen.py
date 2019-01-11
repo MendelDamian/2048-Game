@@ -21,7 +21,12 @@ class Screen:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.quit()
-            print(pygame.mouse.get_pos())
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    return True
+
+            # print(pygame.mouse.get_pos())
 
     def message_display(self, text, x, y, font_size, color):
         font = pygame.font.SysFont('arial', font_size)
