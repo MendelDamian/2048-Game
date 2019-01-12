@@ -27,6 +27,27 @@ def check_lose():
         screen.quit()
 
 
+def move(direction):
+    if direction == "up":
+        for k in range(size*size):
+            for l in range(1, k//size+1):
+                if squares[k-size*l].value == 0 or \
+                   squares[k-size*l].value == squares[k-size*(l-1)].value:
+                    squares[k-size*l].value += squares[k-size*(l-1)].value
+                    squares[k-size*(l-1)].value = 0
+
+    elif direction == "left":
+        pass
+
+    elif direction == "right":
+        pass
+
+    elif direction == "down":
+        pass
+
+    random_field()
+
+
 def random_field():
     field = randint(0, size*size-1)
     while True:
@@ -41,8 +62,9 @@ def game():
     random_field()
     while True:
         check_lose()
-        if screen.event_catcher():
-            random_field()
+        direction = screen.event_catcher()
+        if direction:
+            move(direction)
 
         for i in range(size*size):
             squares[i].update_color()

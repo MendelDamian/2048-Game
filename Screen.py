@@ -22,8 +22,8 @@ class Screen:
                 self.quit()
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    return True
+                if event.key == pygame.K_UP:
+                    return "up"
 
             # print(pygame.mouse.get_pos())
 
