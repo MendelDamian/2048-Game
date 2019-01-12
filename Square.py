@@ -6,7 +6,6 @@ COLORS = {0: (206, 192, 181), 2: (255, 214, 182), 4: (246, 186, 198), 8: (165, 2
 class Square:
 
     def __init__(self, x1, y1, x2, y2):
-
         self.x1 = x1
         self.y1 = y1
         self.x2 = x2 + 10

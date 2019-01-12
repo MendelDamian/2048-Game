@@ -4,7 +4,6 @@ import pygame
 class Screen:
 
     def __init__(self):
-
         pygame.init()
         self.screen_width = 800
         self.screen_height = self.screen_width
