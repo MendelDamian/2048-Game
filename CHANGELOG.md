@@ -7,7 +7,6 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Game doesn't crash after reaching score above 1024
--
 
 ## [0.1.3] - 2019-01-13
 ### Added
