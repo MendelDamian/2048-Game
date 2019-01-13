@@ -24,6 +24,12 @@ class Screen:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
                     return "up"
+                elif event.key == pygame.K_LEFT:
+                    return "left"
+                elif event.key == pygame.K_RIGHT:
+                    return "right"
+                elif event.key == pygame.K_DOWN:
+                    return "down"
 
             # print(pygame.mouse.get_pos())
 

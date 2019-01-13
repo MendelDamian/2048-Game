@@ -30,14 +30,19 @@ def check_lose():
 def move(direction):
     if direction == "up":
         for k in range(size*size):
-            for l in range(1, k//size+1):
+            for l in range(1, k // size+1):
                 if squares[k-size*l].value == 0 or \
                    squares[k-size*l].value == squares[k-size*(l-1)].value:
                     squares[k-size*l].value += squares[k-size*(l-1)].value
                     squares[k-size*(l-1)].value = 0
 
     elif direction == "left":
-        pass
+        for k in range(size*size):
+            for l in range(1, k % size+1):
+                if squares[k-l].value == 0 or \
+                   squares[k-l].value == squares[k-(l-1)].value:
+                    squares[k-l].value += squares[k-(l-1)].value
+                    squares[k-(l-1)].value = 0
 
     elif direction == "right":
         pass
@@ -49,6 +54,7 @@ def move(direction):
 
 
 def random_field():
+    check_lose()
     field = randint(0, size*size-1)
     while True:
         if not squares[field].value:
@@ -61,7 +67,6 @@ def random_field():
 def game():
     random_field()
     while True:
-        check_lose()
         direction = screen.event_catcher()
         if direction:
             move(direction)
