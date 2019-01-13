@@ -11,7 +11,10 @@ class Square:
         self.x2 = x2 + 10
         self.y2 = y2 + 10
         self.value = 0
-        self.update_color()
+        self.color = COLORS[self.value]
 
     def update_color(self):
-        self.color = COLORS[self.value]
+        if self.value <= 1024:
+            self.color = COLORS[self.value]
+        else:
+            self.color = COLORS[1024]

@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.1.4] - 2019-01-13
+### Added
+- Move in all directions
+
+### Fixed
+- Game doesn't crash after reaching score above 1024
+-
+
 ## [0.1.3] - 2019-01-13
 ### Added
 - CHANGELOG file

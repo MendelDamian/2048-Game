@@ -45,10 +45,20 @@ def move(direction):
                     squares[k-(l-1)].value = 0
 
     elif direction == "right":
-        pass
+        for k in range(size*size-1, -1, -1):
+            for l in range(1, size - k % size):
+                if squares[k+l-1].value == squares[k+l].value or \
+                   squares[k+l].value == 0:
+                    squares[k+l].value += squares[k+l-1].value
+                    squares[k+l-1].value = 0
 
     elif direction == "down":
-        pass
+        for k in range(size*size-1, -1, -1):
+            for l in range(1, size-k//size):
+                if squares[k+(l-1)*size].value == squares[k+l*size].value or \
+                   squares[k+l*size].value == 0:
+                    squares[k+l*size].value += squares[k+(l-1)*size].value
+                    squares[k+(l-1)*size].value = 0
 
     random_field()
 

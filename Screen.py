@@ -7,9 +7,10 @@ class Screen:
         pygame.init()
         self.screen_width = 800
         self.screen_height = self.screen_width
+        self.background_color = (189, 173, 161)
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         pygame.display.set_caption("2048 Game!")
-        self.screen.fill((189, 173, 161))
+        self.screen.fill(self.background_color)
         self.clock = pygame.time.Clock()
 
     def quit(self):
@@ -17,6 +18,7 @@ class Screen:
         quit()
 
     def event_catcher(self):
+        self.screen.fill(self.background_color)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.quit()

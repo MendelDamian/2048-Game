@@ -1,7 +1,6 @@
 # 2048 Game
 
 ## Content
-
 - main.py
   - Executes the game loop
 - game.py
@@ -14,3 +13,13 @@
   - You are reading this right now, include basic information about the project
 - CHANGELOG.md
   - Changelog file
+
+## To-do list
+- Main menu
+- Options
+- Color themes
+- Highest score
+- Current score
+- Log files
+- Sounds
+- Animations
