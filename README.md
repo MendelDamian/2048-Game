@@ -1,3 +1,16 @@
-##2048 GAME
+# 2048 Game
 
-22-12-2018 - Project has started
+## Content
+
+- main.py
+  - Executes the game loop
+- game.py
+  - Main file that makes all works
+- Screen.py
+  - File of Screen class that include information about window, handle events, appearing text and quiting the game
+- Square.py
+  - File of Square class that include information about a single square on the screen
+- README.md
+  - You are reading this right now, include basic information about the project
+- CHANGELOG.md
+  - Changelog file
