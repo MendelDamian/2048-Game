@@ -1,5 +1,7 @@
 import pygame
 from Button import Button
+import os
+from xml.etree import ElementTree
 
 
 class Screen:
@@ -9,11 +11,13 @@ class Screen:
         self.screen_width = 800
         self.screen_height = self.screen_width
         self.fps = 60
+        self.lang = "en-GB"
         pygame.display.set_caption("2048 Game!")
         self.background_color = (189, 173, 161)
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         self.clock = pygame.time.Clock()
         self.game = False
+        self.theme = "Default"
 
         self.main_menu()
 
@@ -53,18 +57,23 @@ class Screen:
         text_surface = font.render(text, True, color)
         return text_surface, text_surface.get_rect()
 
+    def req_word(self, lang, requested_word):
+        path = os.path.abspath(os.path.join("lang", "{}.xml".format(lang)))
+        for word in ElementTree.parse(path).findall(self.lang):
+            return word.find(requested_word).text
+
     def main_menu(self):
         play = Button(x=0.5*self.screen_width, y=0.5 * self.screen_height,
-                      width=0.35*self.screen_width, height=0.1*self.screen_height,
-                      color=(20, 163, 39))
+                      width=0.5*self.screen_width, height=0.1*self.screen_height,
+                      color=(20, 163, 39), text="play")
 
         settings = Button(x=0.5*self.screen_width, y=0.5 * self.screen_height+play.height+10,
-                          width=0.35*self.screen_width, height=0.1*self.screen_height,
-                          color=(90, 186, 199))
+                          width=0.5*self.screen_width, height=0.1*self.screen_height,
+                          color=(90, 186, 199), text="settings")
 
         exitb = Button(x=0.5*self.screen_width, y=0.5 * self.screen_height+play.height+settings.height+20,
-                       width=0.35*self.screen_width, height=0.1*self.screen_height,
-                       color=(204, 13, 0))
+                       width=0.5*self.screen_width, height=0.1*self.screen_height,
+                       color=(204, 13, 0), text="exit")
 
         while not self.game:
             self.screen.fill(self.background_color)
@@ -76,21 +85,21 @@ class Screen:
 
             # PLAY BUTTON
             pygame.draw.rect(self.screen, play.color, [play.x, play.y, play.width, play.height])
-            self.message_display("PLAY", play.x+0.5*play.width, play.y+0.475*play.height,
-                                 50, (0, 0, 0), "DejaVu Sans Mono")
+            self.message_display(self.req_word(self.lang, play.text), play.x+0.5*play.width,
+                                 play.y+0.475*play.height, 50, (0, 0, 0), "DejaVu Sans Mono")
             if play.check(pygame.mouse.get_pos()):
                 self.game = True
 
             # SETTINGS BUTTON
             pygame.draw.rect(self.screen, settings.color, [settings.x, settings.y, settings.width, settings.height])
-            self.message_display("SETTINGS", settings.x+0.5*play.width, settings.y+0.475*settings.height,
-                                 50, (0, 0, 0), "DejaVu Sans Mono")
+            self.message_display(self.req_word(self.lang, settings.text), settings.x+0.5*play.width,
+                                 settings.y+0.475*settings.height, 50, (0, 0, 0), "DejaVu Sans Mono")
             settings.check(pygame.mouse.get_pos())
 
             # EXIT BUTTON
             pygame.draw.rect(self.screen, exitb.color, [exitb.x, exitb.y, exitb.width, exitb.height])
-            self.message_display("EXIT", exitb.x+0.5*settings.width, exitb.y+0.475*exitb.height,
-                                 50, (0, 0, 0), "DejaVu Sans Mono")
+            self.message_display(self.req_word(self.lang, exitb.text), exitb.x+0.5*settings.width,
+                                 exitb.y+0.475*exitb.height, 50, (0, 0, 0), "DejaVu Sans Mono")
             if exitb.check(pygame.mouse.get_pos()):
                 self.quit()
 

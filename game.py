@@ -6,8 +6,7 @@ import pygame
 
 screen = Screen()
 size = 4
-theme = "Default"
-add_theme(theme)
+add_theme(screen.theme)
 width = (screen.screen_width-40-10*(2*size-1))/size
 squares = []
 

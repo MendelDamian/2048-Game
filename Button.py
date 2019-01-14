@@ -2,11 +2,12 @@ import pygame
 
 
 class Button:
-    def __init__(self, x, y, width, height, color):
+    def __init__(self, x, y, width, height, color, text):
         self.x = x - 0.5*width
         self.y = y - 0.5*height
         self.width = width
         self.height = height
+        self.text = text
         self.default_color = color
         self.color = color
         self.r = color[0]

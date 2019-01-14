@@ -17,13 +17,15 @@
   - Changelog file
 - Themes folder
   - Folder which contains colors themes for tiles
+- Lang folder
+  - Folder which contains languages
 
 ## To-do list
 - Main menu - DONE in 70%
 - Pause
 - Back
 - Options
-- Languages
+- Languages - DONE in 100%
 - Color themes - DONE in 70%
 - Highest score
 - Current score
