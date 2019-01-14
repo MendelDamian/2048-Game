@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.2.0] - 2019-01-14
+### Added
+- Main menu (2 of 3 buttons only works)
+- Button file
+
+### Changed
+- Way of filling and checking which key was pressed
+
+### Removed
+- Some useless variables and lines for testing
+
 ## [0.1.4] - 2019-01-13
 ### Added
 - Move in all directions

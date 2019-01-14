@@ -9,14 +9,19 @@
   - File of Screen class that include information about window, handle events, appearing text and quiting the game
 - Square.py
   - File of Square class that include information about a single square on the screen
+- Button.py
+  - File of Button class that include information about button and checks if was pressed
 - README.md
   - You are reading this right now, include basic information about the project
 - CHANGELOG.md
   - Changelog file
 
 ## To-do list
-- Main menu
+- Main menu - DONE in 70%
+- Pause
+- Back
 - Options
+- Languages
 - Color themes
 - Highest score
 - Current score

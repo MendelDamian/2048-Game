@@ -7,7 +7,6 @@ screen = Screen()
 size = 4
 width = (screen.screen_width-40-10*(2*size-1))/size
 squares = []
-game = [size*size]
 
 for i in range(size):
     for j in range(size):
@@ -78,6 +77,7 @@ def game():
     random_field()
     while True:
         direction = screen.event_catcher()
+        screen.screen.fill(screen.background_color)
         if direction:
             move(direction)
 
@@ -87,7 +87,8 @@ def game():
                                                                squares[i].x2, squares[i].y2])
             if squares[i].value:
                 screen.message_display(text=str(squares[i].value), x=(2*squares[i].x1+squares[i].x2)/2,
-                                       y=(2*squares[i].y1+squares[i].y2)/2, font_size=50, color=(0, 0, 0))
+                                       y=(2*squares[i].y1+squares[i].y2)/2, font_size=50,
+                                       color=(0, 0, 0), font="arial")
 
+        screen.clock.tick(screen.fps)
         pygame.display.update()
-        screen.clock.tick(60)
