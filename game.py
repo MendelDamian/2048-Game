@@ -1,10 +1,13 @@
 from Screen import Screen
 from Square import Square
+from Square import add_theme
 from random import randint
 import pygame
 
 screen = Screen()
 size = 4
+theme = "Default"
+add_theme(theme)
 width = (screen.screen_width-40-10*(2*size-1))/size
 squares = []
 
@@ -87,8 +90,8 @@ def game():
                                                                squares[i].x2, squares[i].y2])
             if squares[i].value:
                 screen.message_display(text=str(squares[i].value), x=(2*squares[i].x1+squares[i].x2)/2,
-                                       y=(2*squares[i].y1+squares[i].y2)/2, font_size=50,
-                                       color=(0, 0, 0), font="arial")
+                                       y=(2*squares[i].y1+squares[i].y2)/2, font_size=100,
+                                       color=squares[i].font_color, font="Clear Sans Bold")
 
         screen.clock.tick(screen.fps)
         pygame.display.update()

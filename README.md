@@ -15,6 +15,8 @@
   - You are reading this right now, include basic information about the project
 - CHANGELOG.md
   - Changelog file
+- Themes folder
+  - Folder which contains colors themes for tiles
 
 ## To-do list
 - Main menu - DONE in 70%
@@ -22,7 +24,7 @@
 - Back
 - Options
 - Languages
-- Color themes
+- Color themes - DONE in 70%
 - Highest score
 - Current score
 - Log files

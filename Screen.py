@@ -70,8 +70,9 @@ class Screen:
             self.screen.fill(self.background_color)
             self.event_catcher()
 
+            # LOGO
             self.message_display("2048", 0.5 * self.screen_width, 0.20 * self.screen_height,
-                                 160, (242, 82, 31), "verdana")
+                                 200, (242, 82, 31), "Clear Sans Bold")
 
             # PLAY BUTTON
             pygame.draw.rect(self.screen, play.color, [play.x, play.y, play.width, play.height])

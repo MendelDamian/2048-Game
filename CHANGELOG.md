@@ -1,6 +1,18 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.2.1] - 2019-01-14
+### Added
+- File with colors themes of fields
+- Example file that will introduce you into creating your own color theme
+
+### Changed
+- The way of reading colors
+- Font
+
+### Removed
+- Testing lines
+
 ## [0.2.0] - 2019-01-14
 ### Added
 - Main menu (2 of 3 buttons only works)
