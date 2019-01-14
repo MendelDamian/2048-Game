@@ -78,7 +78,7 @@ def random_field():
 
 def game():
     random_field()
-    while True:
+    while screen.game:
         direction = screen.event_catcher()
         screen.screen.fill(screen.background_color)
         if direction:
