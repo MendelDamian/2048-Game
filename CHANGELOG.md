@@ -1,6 +1,16 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.2.3] - 2019-01-15
+### Added
+- Raw options view
+
+### Changed
+- Some methods became @classmethods
+
+### Fixed
+- Game doesn't crash while reaching the score over the max value in a current color theme
+
 ## [0.2.2] - 2019-01-14
 ### Added
 - Languages (en-GB, pl-PL, de-DE)

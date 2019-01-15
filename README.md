@@ -26,9 +26,10 @@
 - Back
 - Options
 - Languages - DONE in 100%
-- Color themes - DONE in 70%
+- Color themes - DONE in 100%
 - Highest score
 - Current score
 - Log files
 - Sounds
 - Animations
+- Lose Screen

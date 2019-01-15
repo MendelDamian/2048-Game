@@ -1,14 +1,13 @@
 from Screen import Screen
 from Square import Square
-from Square import add_theme
 from random import randint
 import pygame
 
 screen = Screen()
 size = 4
-add_theme(screen.theme)
 width = (screen.screen_width-40-10*(2*size-1))/size
 squares = []
+Square.add_theme(screen.theme)
 
 for i in range(size):
     for j in range(size):
@@ -25,7 +24,7 @@ def check_lose():
             points += 1
             break
     if not points:
-        screen.quit()
+        Screen.quit()
 
 
 def move(direction):
@@ -94,3 +93,5 @@ def game():
 
         screen.clock.tick(screen.fps)
         pygame.display.update()
+
+    screen.main_menu()

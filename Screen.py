@@ -11,12 +11,13 @@ class Screen:
         self.screen_width = 800
         self.screen_height = self.screen_width
         self.fps = 60
-        self.lang = "en-GB"
+        self.lang = "pl-PL"
         pygame.display.set_caption("2048 Game!")
         self.background_color = (189, 173, 161)
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         self.clock = pygame.time.Clock()
         self.game = False
+        self.settings_menu = False
         self.theme = "Default"
 
         self.main_menu()
@@ -26,17 +27,18 @@ class Screen:
         self.right_key = pygame.K_RIGHT
         self.down_key = pygame.K_DOWN
 
-    def quit(self):
-        pygame.quit()
-        quit()
-
     def event_catcher(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.quit()
+                    if self.game:
+                        self.game = False
+                    elif self.settings_menu:
+                        self.settings_menu = False
+                    elif not self.game:
+                        Screen.quit()
                 if self.game:
                     if event.key == self.up_key:
                         return "up"
@@ -57,8 +59,8 @@ class Screen:
         text_surface = font.render(text, True, color)
         return text_surface, text_surface.get_rect()
 
-    def req_word(self, lang, requested_word):
-        path = os.path.abspath(os.path.join("lang", "{}.xml".format(lang)))
+    def req_word(self, requested_word):
+        path = os.path.abspath(os.path.join("lang", "{}.xml".format(self.lang)))
         for word in ElementTree.parse(path).findall(self.lang):
             return word.find(requested_word).text
 
@@ -80,28 +82,46 @@ class Screen:
             self.event_catcher()
 
             # LOGO
-            self.message_display("2048", 0.5 * self.screen_width, 0.20 * self.screen_height,
+            self.message_display("2048", 0.5 * self.screen_width, 0.2 * self.screen_height,
                                  200, (242, 82, 31), "Clear Sans Bold")
 
             # PLAY BUTTON
             pygame.draw.rect(self.screen, play.color, [play.x, play.y, play.width, play.height])
-            self.message_display(self.req_word(self.lang, play.text), play.x+0.5*play.width,
+            self.message_display(self.req_word(play.text), play.x+0.5*play.width,
                                  play.y+0.475*play.height, 50, (0, 0, 0), "DejaVu Sans Mono")
             if play.check(pygame.mouse.get_pos()):
                 self.game = True
 
             # SETTINGS BUTTON
             pygame.draw.rect(self.screen, settings.color, [settings.x, settings.y, settings.width, settings.height])
-            self.message_display(self.req_word(self.lang, settings.text), settings.x+0.5*play.width,
+            self.message_display(self.req_word(settings.text), settings.x+0.5*play.width,
                                  settings.y+0.475*settings.height, 50, (0, 0, 0), "DejaVu Sans Mono")
-            settings.check(pygame.mouse.get_pos())
+            if settings.check(pygame.mouse.get_pos()):
+                self.settings_menu = True
+                self.settings()
 
             # EXIT BUTTON
             pygame.draw.rect(self.screen, exitb.color, [exitb.x, exitb.y, exitb.width, exitb.height])
-            self.message_display(self.req_word(self.lang, exitb.text), exitb.x+0.5*settings.width,
+            self.message_display(self.req_word(exitb.text), exitb.x+0.5*settings.width,
                                  exitb.y+0.475*exitb.height, 50, (0, 0, 0), "DejaVu Sans Mono")
             if exitb.check(pygame.mouse.get_pos()):
-                self.quit()
+                Screen.quit()
 
             self.clock.tick(self.fps)
             pygame.display.update()
+
+    def settings(self):
+        while self.settings_menu:
+            self.screen.fill(self.background_color)
+            self.event_catcher()
+
+            self.message_display(self.req_word("settings"), 0.5 * self.screen_width, 0.07 * self.screen_height,
+                                 100, (242, 82, 31), "Clear Sans Bold")
+
+            self.clock.tick(self.fps)
+            pygame.display.update()
+
+    @classmethod
+    def quit(cls):
+        pygame.quit()
+        quit()
