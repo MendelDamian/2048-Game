@@ -31,3 +31,6 @@
 - Sounds
 - Animations
 - Lose Screen
+
+## Important
+If any problems with font I recommend to install the [Clear Sans font](https://01.org/clear-sans)
