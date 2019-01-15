@@ -3,10 +3,8 @@
 ## Content
 - main.py
   - Executes the game loop
-- game.py
-  - Main file that makes all works
 - Screen.py
-  - File of Screen class that include information about window, handle events, appearing text and quiting the game
+  - File of Screen class that include information about window, handle events, appearing text and quiting the game nad makes it all works
 - Square.py
   - File of Square class that include information about a single square on the screen
 - Button.py

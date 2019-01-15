@@ -1,3 +1,6 @@
-from game import game
+from Screen import Screen
 
-game()
+screen = Screen()
+
+while True:
+    screen.play()

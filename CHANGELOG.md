@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 
 ## [0.2.3] - 2019-01-15
+### Changed
+- Screen.py += main.py
+
+### Removed
+- game.py file
+
+### Fixed
+- Game doesn't crash after re-enter to the game
+
+## [0.2.3] - 2019-01-15
 ### Added
 - Raw options view
 
