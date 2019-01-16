@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.2.4] - 2019-01-15
 ### Changed
-- Screen.py += main.py
+- Screen.py += game.py
 
 ### Removed
 - game.py file
