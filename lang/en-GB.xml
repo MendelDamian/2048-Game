@@ -1,5 +1,7 @@
 <lang>
     <en-GB>
+        <full_name>English</full_name>
+        <short_name>en-GB</short_name>
         <play>PLAY</play>
         <settings>SETTINGS</settings>
         <exit>EXIT</exit>

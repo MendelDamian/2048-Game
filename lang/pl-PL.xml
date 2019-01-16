@@ -1,5 +1,7 @@
 <lang>
     <pl-PL>
+        <full_name>Polski</full_name>
+        <short_name>pl-PL</short_name>
         <play>GRAJ</play>
         <settings>USTAWIENIA</settings>
         <exit>WYJŚCIE</exit>

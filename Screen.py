@@ -24,7 +24,8 @@ class Screen:
                 self.tiles.append(Square(x1=x1+j*self.width, y1=y1+i*self.width,
                                          x2=self.width, y2=self.width))
         self.fps = 60
-        self.lang = "pl-PL"
+        self.lang = "en-GB"
+        self.langs = []
         pygame.display.set_caption("2048 Game!")
         self.background_color = (189, 173, 161)
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
@@ -60,15 +61,15 @@ class Screen:
                     elif event.key == self.down_key:
                         return "down"
 
-    def message_display(self, text, x, y, font_size, color, font="verdana"):
+    def message_display(self, text, x, y, font_size, color=(0, 0, 0), font="verdana", pos="center"):
         font = pygame.font.SysFont(font, font_size)
-        text_surf, text_rect = self.text_objects(text, font, color)
+        text_surf, text_rect = Screen.text_objects(text, font, color)
         text_rect.center = (x, y)
+        if pos == "left":
+            text_rect.left = x
+        elif pos == "right":
+            text_rect.right = x
         self.screen.blit(text_surf, text_rect)
-
-    def text_objects(self, text, font, color):
-        text_surface = font.render(text, True, color)
-        return text_surface, text_surface.get_rect()
 
     def check_lose(self):
         points = 0
@@ -124,23 +125,36 @@ class Screen:
             else:
                 field = randint(0, self.size*self.size-1)
 
-    def req_word(self, requested_word):
-        path = os.path.abspath(os.path.join("lang", "{}.xml".format(self.lang)))
-        for word in ElementTree.parse(path).findall(self.lang):
-            return word.find(requested_word).text
-
     def main_menu(self):
+
+        flags_img = []
+        num = 0
+        for img in os.listdir("images\\flags"):
+            flags_img.append(pygame.image.load("images\\flags\\" + img).convert())
+            flags_img[num] = pygame.transform.scale(flags_img[num], (16, 10))
+            self.langs.append(img[:5])
+            num += 1
+        del num
+
+        # PLAY BUTTON
         play = Button(x=0.5*self.screen_width, y=0.5 * self.screen_height,
                       width=0.5*self.screen_width, height=0.1*self.screen_height,
                       color=(20, 163, 39), text="play")
 
+        # SETTINGS BUTTON
         settings = Button(x=0.5*self.screen_width, y=0.5 * self.screen_height+play.height+10,
                           width=0.5*self.screen_width, height=0.1*self.screen_height,
                           color=(90, 186, 199), text="settings")
-
+        # EXIT BUTTON
         exitb = Button(x=0.5*self.screen_width, y=0.5 * self.screen_height+play.height+settings.height+20,
                        width=0.5*self.screen_width, height=0.1*self.screen_height,
                        color=(204, 13, 0), text="exit")
+
+        # LANGUAGE BUTTONS
+        langb = []
+        for i in range(len(self.langs)+1):
+            langb.append(Button(x=self.screen_width-55, y=11+16*i, width=100, height=17,
+                                color=self.background_color, text="", change=0))
 
         while not self.game:
             self.screen.fill(self.background_color)
@@ -152,14 +166,14 @@ class Screen:
 
             # PLAY BUTTON
             pygame.draw.rect(self.screen, play.color, [play.x, play.y, play.width, play.height])
-            self.message_display(self.req_word(play.text), play.x+0.5*play.width,
+            self.message_display(Screen.req_word(play.text, self.lang), play.x+0.5*play.width,
                                  play.y+0.475*play.height, 50, (0, 0, 0), "DejaVu Sans Mono")
             if play.check(pygame.mouse.get_pos()):
                 self.game = True
 
             # SETTINGS BUTTON
             pygame.draw.rect(self.screen, settings.color, [settings.x, settings.y, settings.width, settings.height])
-            self.message_display(self.req_word(settings.text), settings.x+0.5*play.width,
+            self.message_display(Screen.req_word(settings.text, self.lang), settings.x+0.5*play.width,
                                  settings.y+0.475*settings.height, 50, (0, 0, 0), "DejaVu Sans Mono")
             if settings.check(pygame.mouse.get_pos()):
                 self.settings_menu = True
@@ -167,10 +181,27 @@ class Screen:
 
             # EXIT BUTTON
             pygame.draw.rect(self.screen, exitb.color, [exitb.x, exitb.y, exitb.width, exitb.height])
-            self.message_display(self.req_word(exitb.text), exitb.x+0.5*settings.width,
+            self.message_display(Screen.req_word(exitb.text, self.lang), exitb.x+0.5*settings.width,
                                  exitb.y+0.475*exitb.height, 50, (0, 0, 0), "DejaVu Sans Mono")
             if exitb.check(pygame.mouse.get_pos()):
                 Screen.quit()
+
+            # LANG BUTTON
+            for i in range(len(self.langs)+1):
+                pygame.draw.rect(self.screen, langb[i].color, [langb[i].x, langb[i].y, langb[i].width, langb[i].height])
+                if langb[i].check(pygame.mouse.get_pos()) and i and self.langs[i-1] != self.lang:
+                    self.lang = Screen.req_word("short_name", self.langs[i-1])
+
+            # Names of languages
+            s = 0
+            self.message_display(text=Screen.req_word("full_name", self.lang), font_size=15,
+                                 x=self.screen_width-25, y=10, pos="right")
+            self.screen.blit(flags_img[self.find()], (self.screen_width-20, 5))
+            for item in self.langs:
+                self.message_display(text=Screen.req_word("full_name", item), font_size=15,
+                                     x=self.screen_width-25, y=26+(16*s), pos="right")
+                self.screen.blit(flags_img[s], (self.screen_width-20, 21+(16*s)))
+                s += 1
 
             self.clock.tick(self.fps)
             pygame.display.update()
@@ -180,8 +211,8 @@ class Screen:
             self.screen.fill(self.background_color)
             self.event_catcher()
 
-            self.message_display(self.req_word("settings"), 0.5 * self.screen_width, 0.07 * self.screen_height,
-                                 100, (242, 82, 31), "Clear Sans Bold")
+            self.message_display(Screen.req_word("settings", self.lang), 0.5 * self.screen_width,
+                                 0.07 * self.screen_height, 100, (242, 82, 31), "Clear Sans Bold")
 
             self.clock.tick(self.fps)
             pygame.display.update()
@@ -212,6 +243,25 @@ class Screen:
     def reset(self):
         for i in range(self.size*self.size):
             self.tiles[i].value = 0
+
+    def find(self):
+        i = 0
+        for element in self.langs:
+            if element == self.lang:
+                return i
+            else:
+                i += 1
+
+    @classmethod
+    def text_objects(cls, text, font, color):
+        text_surface = font.render(text, True, color)
+        return text_surface, text_surface.get_rect()
+
+    @classmethod
+    def req_word(cls, requested_word, language):
+        path = os.path.abspath(os.path.join("lang", "{}.xml".format(language)))
+        for word in ElementTree.parse(path).findall(language):
+            return word.find(requested_word).text
 
     @classmethod
     def quit(cls):

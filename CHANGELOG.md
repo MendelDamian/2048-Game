@@ -1,7 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [0.2.3] - 2019-01-15
+## [0.3.0] - 2019-01-16
+### Added
+- Switching languages by clicking on the name or flag
+
+## [0.2.4] - 2019-01-15
 ### Changed
 - Screen.py += main.py
 

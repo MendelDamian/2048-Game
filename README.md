@@ -17,12 +17,14 @@
   - Folder which contains colors themes for tiles
 - Lang folder
   - Folder which contains languages
+- Images folder
+  - Folder with images
 
 ## To-do list
-- Main menu - DONE in 70%
+- Main menu - DONE in 90%
 - Pause
 - Back
-- Options
+- Options - DONE in 10%
 - Languages - DONE in 100%
 - Color themes - DONE in 100%
 - Highest score
@@ -31,6 +33,7 @@
 - Sounds
 - Animations
 - Lose Screen
+- File with current settings and default settings
 
 ## Important
 If any problems with font I recommend to install the [Clear Sans font](https://01.org/clear-sans)
