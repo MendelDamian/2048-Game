@@ -2,8 +2,11 @@
     <de-DE>
         <full_name>Deutsch</full_name>
         <short_name>de-DE</short_name>
-        <play>SPIELEN</play>
+        <play>NEUES SPIEL</play>
         <settings>EINSTELLUNGEN</settings>
         <exit>EXIT</exit>
+        <selected>Ausgewählt</selected>
+        <score>Ergebnis</score>
+        <best>Allerbest</best>
     </de-DE>
 </lang>

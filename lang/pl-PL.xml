@@ -2,8 +2,11 @@
     <pl-PL>
         <full_name>Polski</full_name>
         <short_name>pl-PL</short_name>
-        <play>GRAJ</play>
+        <play>NOWA GRA</play>
         <settings>USTAWIENIA</settings>
         <exit>WYJŚCIE</exit>
+        <selected>Wybrany</selected>
+        <score>Wynik</score>
+        <best>Najlepszy</best>
     </pl-PL>
 </lang>

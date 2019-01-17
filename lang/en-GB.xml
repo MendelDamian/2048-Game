@@ -2,8 +2,11 @@
     <en-GB>
         <full_name>English</full_name>
         <short_name>en-GB</short_name>
-        <play>PLAY</play>
+        <play>NEW GAME</play>
         <settings>SETTINGS</settings>
         <exit>EXIT</exit>
+        <selected>Selected</selected>
+        <score>Score</score>
+        <best>Best</best>
     </en-GB>
 </lang>

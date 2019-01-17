@@ -1,6 +1,20 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.3.1] - 2019-01-17
+### Added
+- Current score and the best score of this session
+- You can undo your max 3 last moves (using stack)
+- Instructions in README file about how to play
+
+### Changed
+- Re-builded README file
+- Now it's 10% chance to appear 4 then 2
+
+### Fixed
+- Game doesn't crash anymore after re-entering to game
+- If you don't have Clear Sans font, the game doesn't crash anymore
+
 ## [0.3.0] - 2019-01-16
 ### Added
 - Switching languages by clicking on the name or flag

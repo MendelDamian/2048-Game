@@ -1,42 +1,65 @@
 import pygame
 import os
 from Button import Button
-from xml.etree import ElementTree
 from Square import Square
+from Stack import Stack
 from random import randint
+from xml.etree import ElementTree
 
 
 class Screen:
 
     def __init__(self):
+
         pygame.init()
         self.screen_width = 800
-        self.screen_height = self.screen_width
+        self.screen_height = round(self.screen_width * 1.065)
+        self.icon = pygame.image.load("images\\icon.png")
+        pygame.display.set_icon(self.icon)
+        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
+
+        self.fps = 60
+        self.lang = "en-GB"
+        self.langs = []
+        self.flags_img = []
+        num = 0
+        for img in os.listdir("images\\flags"):
+            self.flags_img.append(pygame.image.load("images\\flags\\" + img).convert())
+            self.flags_img[num] = pygame.transform.scale(self.flags_img[num], (16, 10))
+            self.langs.append(img[:5])
+            num += 1
+        del num
+        pygame.display.set_caption("2048 Game!")
+        self.background_color = (189, 173, 161)
+        self.clock = pygame.time.Clock()
+        self.game = False
+        self.settings_menu = False
+
+        self.main_menu()
+
+        self.up_key = pygame.K_UP
+        self.left_key = pygame.K_LEFT
+        self.right_key = pygame.K_RIGHT
+        self.down_key = pygame.K_DOWN
+        self.backspace_key = pygame.K_BACKSPACE
         self.size = 4
         self.width = (self.screen_width-40-10*(2*self.size-1))/self.size
         self.tiles = []
         self.theme = "Default"
+        self.score = 0
+        self.best = 0
         Square.add_theme(self.theme)
         for i in range(self.size):
             for j in range(self.size):
                 x1 = j*20+20
                 y1 = i*20+20
-                self.tiles.append(Square(x1=x1+j*self.width, y1=y1+i*self.width,
+                self.tiles.append(Square(x1=x1+j*self.width, y1=y1+i*self.width+self.screen_height-self.screen_width,
                                          x2=self.width, y2=self.width))
-        self.fps = 60
-        self.lang = "en-GB"
-        self.langs = []
-        pygame.display.set_caption("2048 Game!")
-        self.background_color = (189, 173, 161)
-        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
-        self.clock = pygame.time.Clock()
-        self.game = False
-        self.settings_menu = False
-        self.up_key = pygame.K_UP
-        self.left_key = pygame.K_LEFT
-        self.right_key = pygame.K_RIGHT
-        self.down_key = pygame.K_DOWN
-        self.main_menu()
+        self.size_of_stack = 3
+        self.stack = Stack(self.size_of_stack * self.size * self.size)
+        self.score_stack = Stack(self.size_of_stack)
+        self.best_score_stack = Stack(self.size_of_stack)
+
         self.play()
 
     def event_catcher(self):
@@ -60,6 +83,8 @@ class Screen:
                         return "right"
                     elif event.key == self.down_key:
                         return "down"
+                    elif event.key == self.backspace_key:
+                        return "back"
 
     def message_display(self, text, x, y, font_size, color=(0, 0, 0), font="verdana", pos="center"):
         font = pygame.font.SysFont(font, font_size)
@@ -81,11 +106,19 @@ class Screen:
             Screen.quit()
 
     def move(self, direction):
+        if direction != "back":
+            for tile in self.tiles:
+                self.stack.push(tile.value)
+            self.score_stack.push(self.score)
+            self.best_score_stack.push(self.best)
+
         if direction == "up":
             for k in range(self.size*self.size):
                 for l in range(1, k // self.size+1):
                     if self.tiles[k-self.size*l].value == 0 or \
                        self.tiles[k-self.size*l].value == self.tiles[k-self.size*(l-1)].value:
+                        if self.tiles[k-self.size*l].value != 0 and self.tiles[k-self.size*(l-1)].value != 0:
+                            self.score += self.tiles[k-self.size*l].value + self.tiles[k-self.size*(l-1)].value
                         self.tiles[k-self.size*l].value += self.tiles[k-self.size*(l-1)].value
                         self.tiles[k-self.size*(l-1)].value = 0
 
@@ -94,6 +127,8 @@ class Screen:
                 for l in range(1, k % self.size+1):
                     if self.tiles[k-l].value == 0 or \
                        self.tiles[k-l].value == self.tiles[k-(l-1)].value:
+                        if self.tiles[k-l].value != 0 and self.tiles[k-l].value != 0:
+                            self.score += self.tiles[k-l].value + self.tiles[k-(l-1)].value
                         self.tiles[k-l].value += self.tiles[k-(l-1)].value
                         self.tiles[k-(l-1)].value = 0
 
@@ -102,6 +137,8 @@ class Screen:
                 for l in range(1, self.size - k % self.size):
                     if self.tiles[k+l-1].value == self.tiles[k+l].value or \
                        self.tiles[k+l].value == 0:
+                        if self.tiles[k+l-1].value != 0 and self.tiles[k+l].value != 0:
+                            self.score += self.tiles[k+l].value + self.tiles[k+l-1].value
                         self.tiles[k+l].value += self.tiles[k+l-1].value
                         self.tiles[k+l-1].value = 0
 
@@ -110,32 +147,35 @@ class Screen:
                 for l in range(1, self.size-k//self.size):
                     if self.tiles[k+(l-1)*self.size].value == self.tiles[k+l*self.size].value or \
                        self.tiles[k+l*self.size].value == 0:
+                        if self.tiles[k+(l-1)*self.size].value != 0 and self.tiles[k+l*self.size].value != 0:
+                            self.score += self.tiles[k+l*self.size].value + self.tiles[k+(l-1)*self.size].value
                         self.tiles[k+l*self.size].value += self.tiles[k+(l-1)*self.size].value
                         self.tiles[k+(l-1)*self.size].value = 0
 
-        self.random_field()
+        elif direction == "back" and not self.stack.empty():
+            for i in range(self.size * self.size, 0, -1):
+                self.tiles[i-1].value = self.stack.top()
+                self.stack.pop()
+            self.score = self.score_stack.top()
+            self.score_stack.pop()
+            self.best = self.best_score_stack.top()
+            self.best_score_stack.pop()
 
     def random_field(self):
         self.check_lose()
         field = randint(0, self.size*self.size-1)
         while True:
             if not self.tiles[field].value:
-                self.tiles[field].value = 2
+                x = randint(0, 10)
+                if not x:
+                    self.tiles[field].value = 4
+                else:
+                    self.tiles[field].value = 2
                 break
             else:
                 field = randint(0, self.size*self.size-1)
 
     def main_menu(self):
-
-        flags_img = []
-        num = 0
-        for img in os.listdir("images\\flags"):
-            flags_img.append(pygame.image.load("images\\flags\\" + img).convert())
-            flags_img[num] = pygame.transform.scale(flags_img[num], (16, 10))
-            self.langs.append(img[:5])
-            num += 1
-        del num
-
         # PLAY BUTTON
         play = Button(x=0.5*self.screen_width, y=0.5 * self.screen_height,
                       width=0.5*self.screen_width, height=0.1*self.screen_height,
@@ -194,17 +234,54 @@ class Screen:
 
             # Names of languages
             s = 0
-            self.message_display(text=Screen.req_word("full_name", self.lang), font_size=15,
-                                 x=self.screen_width-25, y=10, pos="right")
-            self.screen.blit(flags_img[self.find()], (self.screen_width-20, 5))
+            self.message_display(text=Screen.req_word("selected", self.lang) + ": " +
+                                 Screen.req_word("full_name", self.lang),
+                                 font_size=15, x=self.screen_width-25, y=10, pos="right")
+            self.screen.blit(self.flags_img[self.find()], (self.screen_width-20, 5))
             for item in self.langs:
-                self.message_display(text=Screen.req_word("full_name", item), font_size=15,
-                                     x=self.screen_width-25, y=26+(16*s), pos="right")
-                self.screen.blit(flags_img[s], (self.screen_width-20, 21+(16*s)))
+                self.message_display(text=Screen.req_word("full_name", item),
+                                     font_size=15, x=self.screen_width-25, y=26+(16*s), pos="right")
+                self.screen.blit(self.flags_img[s], (self.screen_width-20, 21+(16*s)))
                 s += 1
 
             self.clock.tick(self.fps)
             pygame.display.update()
+
+    def play(self):
+        self.reset()
+        self.random_field()
+
+        while self.game:
+            self.screen.fill(self.background_color)
+            direction = self.event_catcher()
+            if direction:
+                self.move(direction)
+                if direction != "back":
+                    self.random_field()
+                    if self.score > self.best:
+                        self.best = self.score
+
+            for i in range(self.size*self.size):
+                self.tiles[i].update_color()
+                pygame.draw.rect(self.screen, self.tiles[i].color, [self.tiles[i].x1, self.tiles[i].y1,
+                                                                    self.tiles[i].x2, self.tiles[i].y2])
+                if self.tiles[i].value:
+                    self.message_display(text=str(self.tiles[i].value), x=(2*self.tiles[i].x1+self.tiles[i].x2)/2,
+                                         y=(2*self.tiles[i].y1+self.tiles[i].y2)/2, font_size=100,
+                                         color=self.tiles[i].font_color, font="Clear Sans Bold")
+
+            self.message_display(text=Screen.req_word("score", self.lang)+": {}".format(self.score),
+                                 x=20, y=(self.screen_height-self.screen_width+10)/2, font_size=30,
+                                 color=(69, 69, 69), pos="left")
+
+            self.message_display(text=Screen.req_word("best", self.lang)+": {}".format(self.best),
+                                 x=self.screen_width-20, y=(self.screen_height-self.screen_width+10)/2, font_size=30,
+                                 color=(69, 69, 69), pos="right")
+
+            self.clock.tick(self.fps)
+            pygame.display.update()
+
+        self.main_menu()
 
     def settings(self):
         while self.settings_menu:
@@ -217,32 +294,12 @@ class Screen:
             self.clock.tick(self.fps)
             pygame.display.update()
 
-    def play(self):
-        self.reset()
-        self.random_field()
-        while self.game:
-            direction = self.event_catcher()
-            self.screen.fill(self.background_color)
-            if direction:
-                self.move(direction)
-
-            for i in range(self.size*self.size):
-                self.tiles[i].update_color()
-                pygame.draw.rect(self.screen, self.tiles[i].color, [self.tiles[i].x1, self.tiles[i].y1,
-                                                                    self.tiles[i].x2, self.tiles[i].y2])
-                if self.tiles[i].value:
-                    self.message_display(text=str(self.tiles[i].value), x=(2*self.tiles[i].x1+self.tiles[i].x2)/2,
-                                         y=(2*self.tiles[i].y1+self.tiles[i].y2)/2, font_size=100,
-                                         color=self.tiles[i].font_color, font="Clear Sans Bold")
-
-            self.clock.tick(self.fps)
-            pygame.display.update()
-
-        self.main_menu()
-
     def reset(self):
         for i in range(self.size*self.size):
             self.tiles[i].value = 0
+        self.score = 0
+        while not self.stack.empty():
+            self.stack.pop()
 
     def find(self):
         i = 0
@@ -254,8 +311,15 @@ class Screen:
 
     @classmethod
     def text_objects(cls, text, font, color):
-        text_surface = font.render(text, True, color)
-        return text_surface, text_surface.get_rect()
+        text_surface = 0
+        try:
+            text_surface = font.render(text, True, color)
+        except AttributeError:
+            print("ERROR at def text_surface")
+            font = pygame.font.SysFont("Arial", 50)
+            text_surface = font.render(text, True, color)
+        finally:
+            return text_surface, text_surface.get_rect()
 
     @classmethod
     def req_word(cls, requested_word, language):

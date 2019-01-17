@@ -1,4 +1,30 @@
 # 2048 Game
+## How to play
+In the 2048 game, you have to combine blocks of the same value into one block of twice the value, taking care that the entire board is not filled.
+
+## Control
+- Arrow keys - Moving blocks
+- Backspace - Undo your max 3 last moves
+- ESC - Pausing/leaving from the game
+
+## Important
+If any problems with font I recommend to install the [Clear Sans font](https://01.org/clear-sans)
+
+## Currently working on
+- Main menu
+- Options
+- Highest score
+
+## To-do list
+- Pause
+- Log files
+- Sounds
+- Animations
+- Lose Screen
+- File with current settings and default settings
+- Highest score won't reset with every closing game
+- Continue button in menu
+- The drop-down language list
 
 ## Content
 - main.py
@@ -9,6 +35,8 @@
   - File of Square class that include information about a single square on the screen
 - Button.py
   - File of Button class that include information about button and checks if was pressed
+- Stack.py
+  - File of Stack class that contains shift backs information for tiles value and scores
 - README.md
   - You are reading this right now, include basic information about the project
 - CHANGELOG.md
@@ -19,21 +47,3 @@
   - Folder which contains languages
 - Images folder
   - Folder with images
-
-## To-do list
-- Main menu - DONE in 90%
-- Pause
-- Back
-- Options - DONE in 10%
-- Languages - DONE in 100%
-- Color themes - DONE in 100%
-- Highest score
-- Current score
-- Log files
-- Sounds
-- Animations
-- Lose Screen
-- File with current settings and default settings
-
-## Important
-If any problems with font I recommend to install the [Clear Sans font](https://01.org/clear-sans)
