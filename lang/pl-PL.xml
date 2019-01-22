@@ -8,5 +8,13 @@
         <selected>Wybrany</selected>
         <score>Wynik</score>
         <best>Najlepszy</best>
+        <pause>PAUZA</pause>
+        <resume>WZNÓW</resume>
+        <back>POWRÓT</back>
+        <end>ZAKOŃCZ</end>
+        <control>STEROWANIE</control>
+        <visual>WIZUALNE</visual>
+        <sound>DŹWIĘK</sound>
+        <load_default>ZAŁADUJ DOMYŚLNE</load_default>
     </pl-PL>
 </lang>

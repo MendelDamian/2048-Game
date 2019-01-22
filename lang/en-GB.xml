@@ -8,5 +8,13 @@
         <selected>Selected</selected>
         <score>Score</score>
         <best>Best</best>
+        <pause>PAUSE</pause>
+        <resume>RESUME</resume>
+        <back>BACK</back>
+        <end>END</end>
+        <control>CONTROL</control>
+        <visual>VISUAL</visual>
+        <sound>SOUND</sound>
+        <load_default>LOAD DEFAULT</load_default>
     </en-GB>
 </lang>

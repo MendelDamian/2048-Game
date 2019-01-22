@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.3.2] - 2019-01-22
+### Added
+- New Theme (Pastels)
+- New buttons in settings
+
 ## [0.3.1] - 2019-01-17
 ### Added
 - Current score and the best score of this session

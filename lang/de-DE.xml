@@ -4,9 +4,17 @@
         <short_name>de-DE</short_name>
         <play>NEUES SPIEL</play>
         <settings>EINSTELLUNGEN</settings>
-        <exit>EXIT</exit>
+        <exit>AUSFAHRT</exit>
         <selected>Ausgewählt</selected>
         <score>Ergebnis</score>
         <best>Allerbest</best>
+        <pause>PAUSE</pause>
+        <resume>FORTSETZEN</resume>
+        <back>ZURÜCK</back>
+        <end>ENDE</end>
+        <control>KONTROLLE</control>
+        <visual>VISUELL</visual>
+        <sound>SCHALL</sound>
+        <load_default>STANDARD LADEN</load_default>
     </de-DE>
 </lang>

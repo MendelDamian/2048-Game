@@ -11,12 +11,10 @@ In the 2048 game, you have to combine blocks of the same value into one block of
 If any problems with font I recommend to install the [Clear Sans font](https://01.org/clear-sans)
 
 ## Currently working on
-- Main menu
 - Options
 - Highest score
 
 ## To-do list
-- Pause
 - Log files
 - Sounds
 - Animations
