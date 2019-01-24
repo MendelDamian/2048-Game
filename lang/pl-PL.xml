@@ -16,5 +16,6 @@
         <visual>WIZUALNE</visual>
         <sound>DŹWIĘK</sound>
         <load_default>ZAŁADUJ DOMYŚLNE</load_default>
+        <undo>Cofnij</undo>
     </pl-PL>
 </lang>

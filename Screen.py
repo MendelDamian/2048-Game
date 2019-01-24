@@ -265,10 +265,17 @@ class Screen:
                                          y=(2*self.tiles[i].y1+self.tiles[i].y2)/2, font_size=100,
                                          color=self.tiles[i].font_color, font="Clear Sans Bold")
 
-            self.message_display(text=Screen.req_word("score", self.lang)+": {}".format(self.score),
+            # UNDO
+            self.message_display(text=Screen.req_word("undo", self.lang)+": {}".format(self.stack.size()//len(self.tiles)),
                                  x=20, y=(self.screen_height-self.screen_width+10)/2, font_size=30,
                                  color=(69, 69, 69), pos="left")
 
+            # SCORE
+            self.message_display(text=Screen.req_word("score", self.lang)+": {}".format(self.score),
+                                 x=self.screen_width*0.5, y=(self.screen_height-self.screen_width+10)/2, font_size=30,
+                                 color=(69, 69, 69))
+
+            # BEST SCORE
             self.message_display(text=Screen.req_word("best", self.lang)+": {}".format(self.best),
                                  x=self.screen_width-20, y=(self.screen_height-self.screen_width+10)/2, font_size=30,
                                  color=(69, 69, 69), pos="right")

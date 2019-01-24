@@ -16,5 +16,6 @@
         <visual>VISUELL</visual>
         <sound>SCHALL</sound>
         <load_default>STANDARD LADEN</load_default>
+        <undo>Zurücknehmen</undo>
     </de-DE>
 </lang>

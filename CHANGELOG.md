@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.3.3] - 2019-01-24
+### Added
+- Number of possible undo moves displays on the screen
+
 ## [0.3.2] - 2019-01-22
 ### Added
 - New Theme (Pastels)

@@ -16,5 +16,6 @@
         <visual>VISUAL</visual>
         <sound>SOUND</sound>
         <load_default>LOAD DEFAULT</load_default>
+        <undo>Undo</undo>
     </en-GB>
 </lang>
