@@ -1,6 +1,16 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.3.4] - 2019-02-08
+### Added
+- You can set size and languange in the console before the game starts
+
+### Changed
+- 4 spaces instead of tab
+
+### Deleted
+- Settings GUI
+
 ## [0.3.3] - 2019-01-24
 ### Added
 - Number of possible undo moves displays on the screen

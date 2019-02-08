@@ -52,9 +52,9 @@ class Square:
 
     @classmethod
     def sqrt(cls, x):
-        i = 0
         if not x:
             return 0
+        i = 0    
         while x:
             i += 1
             x = x/2

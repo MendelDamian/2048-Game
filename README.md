@@ -17,7 +17,6 @@ If any problems with font I recommend to install the [Clear Sans font](https://0
 ## To-do list
 - Log files
 - Sounds
-- Animations
 - Lose Screen
 - File with current settings and default settings
 - Highest score won't reset with every closing game

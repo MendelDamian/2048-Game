@@ -1,4 +1,4 @@
-import pygame
+from pygame import mouse
 
 
 class Button:
@@ -22,7 +22,7 @@ class Button:
         if self.x+self.width > m_x > self.x and self.y+self.height > m_y > self.y:
             if self.change:
                 self.color = ((self.r+10) % 256, (self.g+10) % 256, (self.b+10) % 256)
-            if pygame.mouse.get_pressed()[0]:
+            if mouse.get_pressed()[0]:
                 return True
         else:
             self.color = self.default_color

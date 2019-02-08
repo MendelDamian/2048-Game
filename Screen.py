@@ -1,5 +1,5 @@
 import pygame
-import os
+from os import listdir, path
 from Button import Button
 from Square import Square
 from Stack import Stack
@@ -12,6 +12,8 @@ class Screen:
 
     def __init__(self):
 
+        self.settings()
+
         pygame.init()
         self.screen_width = 800
         self.screen_height = round(self.screen_width * 1.065)
@@ -20,21 +22,15 @@ class Screen:
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
 
         self.fps = 60
-        self.lang = "en-GB"
-        self.langs = []
         self.flags_img = []
-        num = 0
-        for img in os.listdir("images\\flags"):
+        for num, img in enumerate(listdir("images\\flags")):
             self.flags_img.append(pygame.image.load("images\\flags\\" + img).convert())
             self.flags_img[num] = pygame.transform.scale(self.flags_img[num], (16, 10))
-            self.langs.append(img[:5])
-            num += 1
-        del num
+
         pygame.display.set_caption("2048 Game!")
         self.background_color = (189, 173, 161)
         self.clock = pygame.time.Clock()
         self.game = False
-        self.settings_menu = False
         self.langb = []
         for i in range(len(self.langs)+1):
             self.langb.append(Button(x=self.screen_width-55, y=11+16*i, width=100, height=17,
@@ -47,7 +43,6 @@ class Screen:
         self.right_key = pygame.K_RIGHT
         self.down_key = pygame.K_DOWN
         self.backspace_key = pygame.K_BACKSPACE
-        self.size = 4
         self.width = (self.screen_width-40-10*(2*self.size-1))/self.size
         self.tiles = []
         self.score = 0
@@ -74,10 +69,8 @@ class Screen:
                 self.quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    if not self.game and not self.settings_menu:
+                    if not self.game:
                         Screen.quit()
-                    elif self.settings_menu:
-                        self.settings_menu = False
                     elif self.pause_menu:
                         self.pause_menu = False
                     elif self.game:
@@ -191,12 +184,8 @@ class Screen:
                       width=0.5*self.screen_width, height=0.1*self.screen_height,
                       color=(20, 163, 39), text="play")
 
-        # SETTINGS BUTTON
-        settings = Button(x=0.5*self.screen_width, y=0.5 * self.screen_height+play.height+10,
-                          width=0.5*self.screen_width, height=0.1*self.screen_height,
-                          color=(90, 186, 199), text="settings")
         # EXIT BUTTON
-        exitb = Button(x=0.5*self.screen_width, y=0.85 * self.screen_height,
+        exitb = Button(x=0.5*self.screen_width, y=0.5 * self.screen_height+play.height+10,
                        width=0.5*self.screen_width, height=0.1*self.screen_height,
                        color=(204, 13, 0), text="exit")
 
@@ -221,18 +210,9 @@ class Screen:
             if play.check(pygame.mouse.get_pos()):
                 self.game = True
 
-            # SETTINGS BUTTON
-            pygame.draw.rect(self.screen, settings.color, [settings.x, settings.y, settings.width, settings.height])
-            self.message_display(Screen.req_word(settings.text, self.lang), settings.x+0.5*play.width,
-                                 settings.y+0.475*settings.height, 50, (0, 0, 0), "DejaVu Sans Mono")
-            if settings.check(pygame.mouse.get_pos()):
-                self.settings_menu = True
-                sleep(0.1)
-                self.settings()
-
             # EXIT BUTTON
             pygame.draw.rect(self.screen, exitb.color, [exitb.x, exitb.y, exitb.width, exitb.height])
-            self.message_display(Screen.req_word(exitb.text, self.lang), exitb.x+0.5*settings.width,
+            self.message_display(Screen.req_word(exitb.text, self.lang), exitb.x+0.5*play.width,
                                  exitb.y+0.475*exitb.height, 50, (0, 0, 0), "DejaVu Sans Mono")
             if exitb.check(pygame.mouse.get_pos()):
                 Screen.quit()
@@ -285,80 +265,6 @@ class Screen:
 
         self.main_menu()
 
-    def settings(self):
-        # Control button
-        controlb = Button(x=0.5*self.screen_width, y=0.25 * self.screen_height,
-                          width=0.5*self.screen_width, height=0.1*self.screen_height,
-                          color=(90, 186, 199), text="control")
-
-        # Visual button
-        visualb = Button(x=0.5*self.screen_width, y=0.25 * self.screen_height+controlb.height+10,
-                         width=0.5*self.screen_width, height=0.1*self.screen_height,
-                         color=(90, 186, 199), text="visual")
-
-        # Sound button
-        soundb = Button(x=0.5*self.screen_width, y=0.25 * self.screen_height+(visualb.height+10)*2,
-                        width=0.5*self.screen_width, height=0.1*self.screen_height,
-                        color=(90, 186, 199), text="sound")
-
-        # Load default button
-        ldb = Button(x=0.5*self.screen_width, y=0.25 * self.screen_height+(visualb.height+10)*3,
-                     width=0.5*self.screen_width, height=0.1*self.screen_height,
-                     color=(204, 13, 0), text="load_default")
-
-        # Back button
-        backb = Button(x=0.5*self.screen_width, y=0.25 * self.screen_height+(visualb.height+10)*4,
-                       width=0.5*self.screen_width, height=0.1*self.screen_height,
-                       color=(90, 186, 199), text="back")
-
-        while self.settings_menu:
-            self.screen.fill(self.background_color)
-            self.event_catcher()
-
-            self.message_display(Screen.req_word("settings", self.lang), 0.5 * self.screen_width,
-                                 0.07 * self.screen_height, 100, (242, 82, 31), "Clear Sans Bold")
-
-            # Control button
-            pygame.draw.rect(self.screen, controlb.color, [controlb.x, controlb.y, controlb.width, controlb.height])
-            self.message_display(Screen.req_word(controlb.text, self.lang), controlb.x+0.5*controlb.width,
-                                 controlb.y+0.475*controlb.height, 50, (0, 0, 0), "DejaVu Sans Mono")
-            if controlb.check(pygame.mouse.get_pos()):
-                pass
-
-            # Visual Button
-            pygame.draw.rect(self.screen, visualb.color, [visualb.x, visualb.y, visualb.width, visualb.height])
-            self.message_display(Screen.req_word(visualb.text, self.lang), visualb.x+0.5*visualb.width,
-                                 visualb.y+0.475*visualb.height, 50, (0, 0, 0), "DejaVu Sans Mono")
-            if visualb.check(pygame.mouse.get_pos()):
-                pass
-
-            # Sound Button
-            pygame.draw.rect(self.screen, soundb.color, [soundb.x, soundb.y, soundb.width, soundb.height])
-            self.message_display(Screen.req_word(soundb.text, self.lang), soundb.x+0.5*soundb.width,
-                                 soundb.y+0.475*soundb.height, 50, (0, 0, 0), "DejaVu Sans Mono")
-            if soundb.check(pygame.mouse.get_pos()):
-                pass
-
-            # Load default Button
-            pygame.draw.rect(self.screen, ldb.color, [ldb.x, ldb.y, ldb.width, ldb.height])
-            self.message_display(Screen.req_word(ldb.text, self.lang), ldb.x+0.5*ldb.width,
-                                 ldb.y+0.475*ldb.height, 50, (0, 0, 0), "DejaVu Sans Mono")
-            if ldb.check(pygame.mouse.get_pos()):
-                pass
-
-            # Back Button
-            pygame.draw.rect(self.screen, backb.color, [backb.x, backb.y, backb.width, backb.height])
-            self.message_display(Screen.req_word(backb.text, self.lang), backb.x+0.5*backb.width,
-                                 backb.y+0.475*backb.height, 50, (0, 0, 0), "DejaVu Sans Mono")
-            if backb.check(pygame.mouse.get_pos()):
-                sleep(0.1)
-                self.settings_menu = False
-
-            self.show_languages()
-
-            self.clock.tick(self.fps)
-            pygame.display.update()
-
     def pause(self):
         # Resume button
         resumeb = Button(x=0.5*self.screen_width, y=0.5 * self.screen_height,
@@ -398,6 +304,44 @@ class Screen:
 
             self.clock.tick(self.fps)
             pygame.display.update()
+
+    def settings(self):
+        print("What size of game do you want? ")
+        self.set_size()
+
+        print("Which language do you want to use? ")
+        self.set_lang()
+
+    def set_size(self):
+        try:
+            self.size = int(input())
+        except ValueError:
+            print("It must be value between 4 and 16")
+            self.set_size()
+        if self.size > 16 or self.size < 4:
+            print("It must be value between 4 and 16")
+            self.set_size()
+
+    def set_lang(self):
+        self.langs = []
+        lang2 = 0
+        how_many = 0
+        for num, img in enumerate(listdir("images\\flags")):
+            self.langs.append(img[:5])
+            print(num, self.langs[num])
+            how_many = num
+
+        try:
+            self.lang = int(input())
+        except ValueError:
+            print("Choice the number between 0-{}".format(how_many))
+            self.set_lang()
+
+        if self.lang > how_many or self.lang < 0:
+            print("Choice the number between 0-{}".format(how_many))
+            self.set_lang()
+
+        self.lang = self.langs[self.lang]
 
     def show_languages(self):
         # LANG BUTTON
@@ -447,8 +391,8 @@ class Screen:
 
     @classmethod
     def req_word(cls, requested_word, language):
-        path = os.path.abspath(os.path.join("lang", "{}.xml".format(language)))
-        for word in ElementTree.parse(path).findall(language):
+        full_path = path.abspath(path.join("lang", "{}.xml".format(language)))
+        for word in ElementTree.parse(full_path).findall(language):
             return word.find(requested_word).text
 
     @classmethod
