@@ -16,17 +16,17 @@ class Screen:
         self.size_default = 4
         self.theme_default = "Default"
         self.lang_default = "en-GB"
+        self.size_of_stack_default = 3
 
         self.size = 4
         self.theme = "Default"
         self.lang = "en-GB"
-
+        self.size_of_stack = 3
         self.langs = []
         self.nof = 0
         for num, img in enumerate(listdir("images\\flags")):
             self.langs.append(img[:5])
             self.nof = num
-
         Square.add_theme(self.theme)
 
         self.settings()
@@ -72,7 +72,6 @@ class Screen:
                 y1 = i*20+20
                 self.tiles.append(Square(x1=x1+j*self.width, y1=y1+i*self.width+self.screen_height-self.screen_width,
                                          x2=self.width, y2=self.width))
-        self.size_of_stack = 3
         self.stack = Stack(self.size_of_stack * self.size * self.size)
         self.score_stack = Stack(self.size_of_stack)
         self.best_score_stack = Stack(self.size_of_stack)
@@ -328,6 +327,7 @@ class Screen:
             print(f"1) Size: {self.size}")
             print(f"2) Theme: {self.theme}")
             print(f"3) Language: {self.lang}")
+            print(f"4) Undo moves: {self.size_of_stack}")
 
             print("\nIf you want to change someting type digit of the option, if not - press Enter")
             print("Input:  ",end='')
@@ -341,21 +341,28 @@ class Screen:
                 self.select_theme()
             elif choice == "3":
                 self.set_lang()
+            elif choice == "4":
+                self.set_stack()
             else:
                 print("Wrong option")
 
     def set_size(self):
         Screen.cls()
         print("What size of game do you want? ")
-        try:
-            print("\nInput:  ", end='')
-            self.size = int(input())
-        except ValueError:
-            print("It must be a value between 4 and 16")
-            self.set_size()
-        if self.size > 16 or self.size < 4:
-            print("It must be a value between 4 and 16")
-            self.set_size()
+        for i in range(10):
+            try:
+                print("\nInput:  ", end='')
+                self.size = int(input())
+            except ValueError:
+                print("It must be a value between 4 and 16")
+                continue
+            if self.size > 16 or self.size < 4:
+                print("It must be a value between 4 and 16")
+                continue
+            break
+        else:
+            print("Critical ERROR or user in an idiot")
+            Screen.quit()
 
     def select_theme(self):
         Screen.cls()
@@ -364,16 +371,20 @@ class Screen:
             if theme[:-4] != "Example":
                 print(theme[:-4])
         
-        print("\nInput:  ", end='')
-        self.theme = input()
-        if not isfile("Themes\\{}.txt".format(self.theme)):
-            print("Incorrect option!")
-            self.select_theme()
-        if self.theme == "Example":
-            print("Incorrect option!")
-            self.select_theme()
-
-        Square.add_theme(self.theme)
+        for i in range(10):
+            print("\nInput:  ", end='')
+            self.theme = input()
+            if not isfile("Themes\\{}.txt".format(self.theme)):
+                print("Incorrect option!")
+                continue
+            if self.theme == "Example":
+                print("Incorrect option!")
+                continue
+            Square.add_theme(self.theme)
+            break
+        else:
+            print("Critical ERROR or user in an idiot")
+            Screen.quit()
 
     def set_lang(self):
         Screen.cls()
@@ -395,10 +406,28 @@ class Screen:
             break
 
         else:
-            print("Critical ERROR")
+            print("Critical ERROR or user is an idiot")
             Screen.quit()
 
         self.lang = self.langs[self.lang]
+
+    def set_stack(self):
+        Screen.cls()
+        print("How many undo moves do you want to have?")
+        for i in range(10):
+            print("\nInput:  ", end='')
+            try:
+                self.size_of_stack = int(input())
+            except ValueError:
+                print("It must be a value between 0 and 99")
+                continue
+            if self.size_of_stack > 99 or self.size_of_stack < 0:
+                print("Choice the number between 0-99")
+                continue
+            break
+        else:
+            print("Critical ERROR or user is an idiot")
+            Screen.quit()
 
     def show_languages(self):
         # LANG BUTTON
