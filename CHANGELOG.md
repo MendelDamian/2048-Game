@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.3.5] - 2019-02-09
+### Added
+- Fully working settings
+
 ## [0.3.4] - 2019-02-08
 ### Added
 - You can set size and languange in the console before the game starts

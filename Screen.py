@@ -1,16 +1,33 @@
 import pygame
-from os import listdir, path
+from os import listdir, path, system, name
 from Button import Button
 from Square import Square
 from Stack import Stack
 from random import randint
 from xml.etree import ElementTree
 from time import sleep
+from os.path import isfile
 
 
 class Screen:
 
     def __init__(self):
+
+        self.size_default = 4
+        self.theme_default = "Default"
+        self.lang_default = "en-GB"
+
+        self.size = 4
+        self.theme = "Default"
+        self.lang = "en-GB"
+
+        self.langs = []
+        self.nof = 0
+        for num, img in enumerate(listdir("images\\flags")):
+            self.langs.append(img[:5])
+            self.nof = num
+
+        Square.add_theme(self.theme)
 
         self.settings()
 
@@ -48,8 +65,7 @@ class Screen:
         self.score = 0
         self.best = 0
         self.pause_menu = False
-        self.theme = "Default"
-        Square.add_theme(self.theme)
+
         for i in range(self.size):
             for j in range(self.size):
                 x1 = j*20+20
@@ -306,40 +322,81 @@ class Screen:
             pygame.display.update()
 
     def settings(self):
-        print("What size of game do you want? ")
-        self.set_size()
+        while True:
+            Screen.cls()
+            print("\nCurrent settings:\n")
+            print(f"1) Size: {self.size}")
+            print(f"2) Theme: {self.theme}")
+            print(f"3) Language: {self.lang}")
 
-        print("Which language do you want to use? ")
-        self.set_lang()
+            print("\nIf you want to change someting type digit of the option, if not - press Enter")
+            print("Input:  ",end='')
+            choice = input()
+
+            if choice == "":
+                break
+            elif choice == "1":
+                self.set_size()
+            elif choice == "2":
+                self.select_theme()
+            elif choice == "3":
+                self.set_lang()
+            else:
+                print("Wrong option")
 
     def set_size(self):
+        Screen.cls()
+        print("What size of game do you want? ")
         try:
+            print("\nInput:  ", end='')
             self.size = int(input())
         except ValueError:
-            print("It must be value between 4 and 16")
+            print("It must be a value between 4 and 16")
             self.set_size()
         if self.size > 16 or self.size < 4:
-            print("It must be value between 4 and 16")
+            print("It must be a value between 4 and 16")
             self.set_size()
 
+    def select_theme(self):
+        Screen.cls()
+        print("Which theme do you want to use?")
+        for theme in listdir("Themes\\"):
+            if theme[:-4] != "Example":
+                print(theme[:-4])
+        
+        print("\nInput:  ", end='')
+        self.theme = input()
+        if not isfile("Themes\\{}.txt".format(self.theme)):
+            print("Incorrect option!")
+            self.select_theme()
+        if self.theme == "Example":
+            print("Incorrect option!")
+            self.select_theme()
+
+        Square.add_theme(self.theme)
+
     def set_lang(self):
-        self.langs = []
-        lang2 = 0
-        how_many = 0
-        for num, img in enumerate(listdir("images\\flags")):
-            self.langs.append(img[:5])
-            print(num, self.langs[num])
-            how_many = num
+        Screen.cls()
+        print("Which language do you want to use? ")
+        for index, item in enumerate(self.langs):
+            print(f"{index}.", item)
 
-        try:
-            self.lang = int(input())
-        except ValueError:
-            print("Choice the number between 0-{}".format(how_many))
-            self.set_lang()
+        for i in range(10):
+            try:
+                print("\nInput:  ", end='')
+                self.lang = int(input())
+            except ValueError:
+                print("Choice the number between 0-{}".format(self.nof))
+                continue
 
-        if self.lang > how_many or self.lang < 0:
-            print("Choice the number between 0-{}".format(how_many))
-            self.set_lang()
+            if self.lang > self.nof or self.lang < 0:
+                print("Choice the number between 0-{}".format(self.nof))
+                continue
+            break
+
+        else:
+            print("Critical ERROR")
+            Screen.quit()
 
         self.lang = self.langs[self.lang]
 
@@ -399,3 +456,7 @@ class Screen:
     def quit(cls):
         pygame.quit()
         quit()
+
+    @classmethod
+    def cls(cls):
+        system('cls' if name=='nt' else 'clear')

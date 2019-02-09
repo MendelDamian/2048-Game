@@ -11,7 +11,6 @@ In the 2048 game, you have to combine blocks of the same value into one block of
 If any problems with font I recommend to install the [Clear Sans font](https://01.org/clear-sans)
 
 ## Currently working on
-- Options
 - Highest score
 
 ## To-do list
@@ -19,7 +18,7 @@ If any problems with font I recommend to install the [Clear Sans font](https://0
 - Sounds
 - Lose Screen
 - File with current settings and default settings
-- Highest score won't reset with every closing game
+- Highest score won't reset every time you close game
 - Continue button in menu
 - The drop-down language list
 

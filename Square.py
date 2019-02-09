@@ -40,6 +40,8 @@ class Square:
 
     @classmethod
     def add_theme(cls, theme):
+        if COLORS:
+            COLORS.clear()
         with open("Themes\\{}.txt".format(theme), 'r') as file:
             cls.num_lines = sum(1 for x in file)-1
             cls.max_value = pow(2, cls.num_lines)
