@@ -12,10 +12,23 @@
         <resume>WZNÓW</resume>
         <back>POWRÓT</back>
         <end>ZAKOŃCZ</end>
-        <control>STEROWANIE</control>
-        <visual>WIZUALNE</visual>
-        <sound>DŹWIĘK</sound>
-        <load_default>ZAŁADUJ DOMYŚLNE</load_default>
         <undo>Cofnij</undo>
+        <current_settings>Obecne ustawienia</current_settings>
+        <size>Wielkosc</size>
+        <theme>Motyw</theme>
+        <language>Jezyk</language>
+        <undo_moves>Cofniecia</undo_moves>
+        <width>Szerokosc okna</width>
+        <instrucion>Jezeli chcesz cos zmienic to podaj cyfre opcji, jezeli nie - nacisnij Enter</instrucion>
+        <input>Wybor</input>
+        <wrong_option>Niepoprawny wybor</wrong_option>
+        <req_size>Jak duza ma byc plansza</req_size>
+        <req_theme>Ktorego motywu chcesz uzyc</req_theme>
+        <req_lang>Ktorego jezyka chcesz uzywac</req_lang>
+        <req_stack>Jak wiele cofniec chcesz posiadac</req_stack>
+        <req_width>Jak wielkie ma byc okno z gra</req_width>
+        <inv_option1>Wybierz liczbe pomiedzy</inv_option1>
+        <inv_option2>a</inv_option2>
+        <critical>Krytyczny BLAD lub uzytkownik jest debilem</critical>
     </pl-PL>
 </lang>

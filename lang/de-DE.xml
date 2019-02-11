@@ -12,10 +12,23 @@
         <resume>FORTSETZEN</resume>
         <back>ZURÜCK</back>
         <end>ENDE</end>
-        <control>KONTROLLE</control>
-        <visual>VISUELL</visual>
-        <sound>SCHALL</sound>
-        <load_default>STANDARD LADEN</load_default>
         <undo>Zurücknehmen</undo>
+        <current_settings>Current settings</current_settings>
+        <size>Size</size>
+        <theme>Theme</theme>
+        <language>Language</language>
+        <undo_moves>Undo moves</undo_moves>
+        <width>Game width</width>
+        <instrucion>If you want to change someting type digit of the option, if not - press Enter</instrucion>
+        <input>Input</input>
+        <wrong_option>Wrong option</wrong_option>
+        <req_size>What size of game do you want</req_size>
+        <req_theme>Which theme do you want to use</req_theme>
+        <req_lang>Which language do you want to use</req_lang>
+        <req_stack>How many undo moves do you want to have</req_stack>
+        <req_width>What size of game screen do you want</req_width>
+        <inv_option1>Choice the number between</inv_option1>
+        <inv_option2>and</inv_option2>
+        <critical>Critical ERROR or user in an idiot</critical>
     </de-DE>
 </lang>

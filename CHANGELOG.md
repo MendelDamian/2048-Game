@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2019-02-11
+### Added
+- Settings are available in all 3 languages
+- Simple background in menu
+
+### Fixed
+- Game doesn't crash anymore after selecting 0 for undo moves
+
 ## [0.3.5] - 2019-02-09
 ### Added
 - Fully working settings

@@ -17,11 +17,16 @@ class Screen:
         self.theme_default = "Default"
         self.lang_default = "en-GB"
         self.size_of_stack_default = 3
+        self.screen_width_default = 800
+        self.screen_height_default = round(self.screen_width_default * 1.065)
 
         self.size = 4
         self.theme = "Default"
         self.lang = "en-GB"
         self.size_of_stack = 3
+        self.screen_width = 800
+        self.screen_height = round(self.screen_width * 1.065)
+
         self.langs = []
         self.nof = 0
         for num, img in enumerate(listdir("images\\flags")):
@@ -32,8 +37,6 @@ class Screen:
         self.settings()
 
         pygame.init()
-        self.screen_width = 800
-        self.screen_height = round(self.screen_width * 1.065)
         self.icon = pygame.image.load("images\\icon.png")
         pygame.display.set_icon(self.icon)
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
@@ -45,13 +48,17 @@ class Screen:
             self.flags_img[num] = pygame.transform.scale(self.flags_img[num], (16, 10))
 
         pygame.display.set_caption("2048 Game!")
-        self.background_color = (189, 173, 161)
+        self.background_color_play = (189, 173, 161)
+        self.background = pygame.image.load('images\\background.jpg').convert()
+        self.background = pygame.transform.scale(self.background, 
+                                                (self.screen_width, 
+                                                 self.screen_height))
         self.clock = pygame.time.Clock()
         self.game = False
         self.langb = []
         for i in range(len(self.langs)+1):
             self.langb.append(Button(x=self.screen_width-55, y=11+16*i, width=100, height=17,
-                                     color=self.background_color, text="", change=0))
+                                     color=(0, 0, 0), text="", change=0))
 
         self.main_menu()
 
@@ -72,9 +79,10 @@ class Screen:
                 y1 = i*20+20
                 self.tiles.append(Square(x1=x1+j*self.width, y1=y1+i*self.width+self.screen_height-self.screen_width,
                                          x2=self.width, y2=self.width))
-        self.stack = Stack(self.size_of_stack * self.size * self.size)
-        self.score_stack = Stack(self.size_of_stack)
-        self.best_score_stack = Stack(self.size_of_stack)
+        if self.size_of_stack:
+            self.stack = Stack(self.size_of_stack * self.size * self.size)
+            self.score_stack = Stack(self.size_of_stack)
+            self.best_score_stack = Stack(self.size_of_stack)
 
         self.play()
 
@@ -124,7 +132,7 @@ class Screen:
             Screen.quit()
 
     def move(self, direction):
-        if direction != "back":
+        if direction != "back" and self.size_of_stack:
             for tile in self.tiles:
                 self.stack.push(tile.value)
             self.score_stack.push(self.score)
@@ -170,14 +178,15 @@ class Screen:
                         self.tiles[k+l*self.size].value += self.tiles[k+(l-1)*self.size].value
                         self.tiles[k+(l-1)*self.size].value = 0
 
-        elif direction == "back" and not self.stack.empty():
-            for i in range(self.size * self.size, 0, -1):
-                self.tiles[i-1].value = self.stack.top()
-                self.stack.pop()
-            self.score = self.score_stack.top()
-            self.score_stack.pop()
-            self.best = self.best_score_stack.top()
-            self.best_score_stack.pop()
+        elif direction == "back" and self.size_of_stack:
+            if not self.stack.empty():
+                for i in range(self.size * self.size, 0, -1):
+                    self.tiles[i-1].value = self.stack.top()
+                    self.stack.pop()
+                self.score = self.score_stack.top()
+                self.score_stack.pop()
+                self.best = self.best_score_stack.top()
+                self.best_score_stack.pop()
 
     def random_field(self):
         self.check_lose()
@@ -204,14 +213,8 @@ class Screen:
                        width=0.5*self.screen_width, height=0.1*self.screen_height,
                        color=(204, 13, 0), text="exit")
 
-        # LANGUAGE BUTTONS
-        langb = []
-        for i in range(len(self.langs)+1):
-            langb.append(Button(x=self.screen_width-55, y=11+16*i, width=100, height=17,
-                                color=self.background_color, text="", change=0))
-
         while not self.game:
-            self.screen.fill(self.background_color)
+            self.screen.blit(self.background, (0, 0))
             self.event_catcher()
 
             # LOGO
@@ -242,7 +245,7 @@ class Screen:
         self.random_field()
 
         while self.game:
-            self.screen.fill(self.background_color)
+            self.screen.fill(self.background_color_play)
             direction = self.event_catcher()
             if direction:
                 self.move(direction)
@@ -261,9 +264,14 @@ class Screen:
                                          color=self.tiles[i].font_color, font="Clear Sans Bold")
 
             # UNDO
-            self.message_display(text=Screen.req_word("undo", self.lang)+": {}".format(self.stack.size()//len(self.tiles)),
-                                 x=20, y=(self.screen_height-self.screen_width+10)/2, font_size=30,
-                                 color=(69, 69, 69), pos="left")
+            if self.size_of_stack:
+                self.message_display(text=Screen.req_word("undo", self.lang)+": {}".format(self.stack.size()//len(self.tiles)),
+                                     x=20, y=(self.screen_height-self.screen_width+10)/2, font_size=30,
+                                     color=(69, 69, 69), pos="left")
+            else:
+                self.message_display(text=Screen.req_word("undo", self.lang)+": 0",
+                                     x=20, y=(self.screen_height-self.screen_width+10)/2, font_size=30,
+                                     color=(69, 69, 69), pos="left")
 
             # SCORE
             self.message_display(text=Screen.req_word("score", self.lang)+": {}".format(self.score),
@@ -292,7 +300,7 @@ class Screen:
                       color=(204, 13, 0), text="end")
 
         while self.pause_menu:
-            self.screen.fill(self.background_color)
+            self.screen.blit(self.background, (0, 0))
             self.event_catcher()
 
             # Pause logo
@@ -315,7 +323,7 @@ class Screen:
                 self.game = False
                 sleep(0.1)
 
-            self.show_languages()
+            self.show_languages(bg=None)
 
             self.clock.tick(self.fps)
             pygame.display.update()
@@ -323,16 +331,16 @@ class Screen:
     def settings(self):
         while True:
             Screen.cls()
-            print("\nCurrent settings:\n")
-            print(f"1) Size: {self.size}")
-            print(f"2) Theme: {self.theme}")
-            print(f"3) Language: {self.lang}")
-            print(f"4) Undo moves: {self.size_of_stack}")
+            print("\n{}:\n".format(Screen.req_word("current_settings", self.lang)))
+            print("1) {}: {}".format(Screen.req_word("size", self.lang), self.size))
+            print("2) {}: {}".format(Screen.req_word("theme", self.lang), self.theme))
+            print("3) {}: {}".format(Screen.req_word("language", self.lang), self.lang))
+            print("4) {}: {}".format(Screen.req_word("undo_moves", self.lang), self.size_of_stack))
+            print("5) {}: {}".format(Screen.req_word("width", self.lang), self.screen_width))
+            print("\n{}".format(Screen.req_word("instrucion", self.lang)))
 
-            print("\nIf you want to change someting type digit of the option, if not - press Enter")
-            print("Input:  ",end='')
+            print("\n{}:  ".format(Screen.req_word("input", self.lang)), end='')
             choice = input()
-
             if choice == "":
                 break
             elif choice == "1":
@@ -343,96 +351,126 @@ class Screen:
                 self.set_lang()
             elif choice == "4":
                 self.set_stack()
-            else:
-                print("Wrong option")
+            elif choice == "5":
+                self.set_width()
 
     def set_size(self):
         Screen.cls()
-        print("What size of game do you want? ")
+        print("{}?".format(Screen.req_word("req_size", self.lang)))
         for i in range(10):
             try:
-                print("\nInput:  ", end='')
+                print("\n{}:  ".format(Screen.req_word("input", self.lang)), end='')
                 self.size = int(input())
             except ValueError:
-                print("It must be a value between 4 and 16")
+                print("{} 4 {} 16".format(Screen.req_word("inv_option1", self.lang), 
+                                                          Screen.req_word("inv_option2", self.lang)))
                 continue
             if self.size > 16 or self.size < 4:
-                print("It must be a value between 4 and 16")
+                print("{} 4 {} 16".format(Screen.req_word("inv_option1", self.lang), 
+                                                          Screen.req_word("inv_option2", self.lang)))
                 continue
             break
         else:
-            print("Critical ERROR or user in an idiot")
+            print("{}".format(Screen.req_word("critical", self.lang)))
             Screen.quit()
 
     def select_theme(self):
         Screen.cls()
-        print("Which theme do you want to use?")
+        print("{}?".format(Screen.req_word("req_theme", self.lang)))
         for theme in listdir("Themes\\"):
             if theme[:-4] != "Example":
                 print(theme[:-4])
         
         for i in range(10):
-            print("\nInput:  ", end='')
+            print("\n{}:  ".format(Screen.req_word("input", self.lang)), end='')
             self.theme = input()
             if not isfile("Themes\\{}.txt".format(self.theme)):
-                print("Incorrect option!")
+                print("{}".format(Screen.req_word("wrong_option", self.lang)))
                 continue
             if self.theme == "Example":
-                print("Incorrect option!")
+                print("{}".format(Screen.req_word("wrong_option", self.lang)))
                 continue
             Square.add_theme(self.theme)
             break
         else:
-            print("Critical ERROR or user in an idiot")
+            print("{}".format(Screen.req_word("critical", self.lang)))
             Screen.quit()
 
     def set_lang(self):
         Screen.cls()
-        print("Which language do you want to use? ")
+        print("{}?".format(Screen.req_word("req_lang", self.lang)))
         for index, item in enumerate(self.langs):
             print(f"{index}.", item)
 
         for i in range(10):
             try:
-                print("\nInput:  ", end='')
+                print("\n{}:  ".format(Screen.req_word("input", self.lang)), end='')
                 self.lang = int(input())
             except ValueError:
-                print("Choice the number between 0-{}".format(self.nof))
+                print("{} 0 {} {}".format(Screen.req_word("inv_option1", self.lang), 
+                                                          Screen.req_word("inv_option2", self.lang),
+                                                          self.nof))
                 continue
 
             if self.lang > self.nof or self.lang < 0:
-                print("Choice the number between 0-{}".format(self.nof))
+                print("{} 0 {} {}".format(Screen.req_word("inv_option1", self.lang), 
+                                                          Screen.req_word("inv_option2", self.lang),
+                                                          self.nof))
                 continue
             break
 
         else:
-            print("Critical ERROR or user is an idiot")
+            print("{}".format(Screen.req_word("critical", self.lang)))
             Screen.quit()
 
         self.lang = self.langs[self.lang]
 
     def set_stack(self):
         Screen.cls()
-        print("How many undo moves do you want to have?")
+        print("{}?".format(Screen.req_word("req_stack", self.lang)))
         for i in range(10):
-            print("\nInput:  ", end='')
+            print("\n{}:  ".format(Screen.req_word("input", self.lang)), end='')
             try:
                 self.size_of_stack = int(input())
             except ValueError:
-                print("It must be a value between 0 and 99")
+                print("{} 0 {} 99".format(Screen.req_word("inv_option1", self.lang), 
+                                                          Screen.req_word("inv_option2", self.lang)))
                 continue
             if self.size_of_stack > 99 or self.size_of_stack < 0:
-                print("Choice the number between 0-99")
+                print("{} 0 {} 99".format(Screen.req_word("inv_option1", self.lang), 
+                                                          Screen.req_word("inv_option2", self.lang)))
                 continue
             break
         else:
-            print("Critical ERROR or user is an idiot")
+            print("{}".format(Screen.req_word("critical", self.lang)))
             Screen.quit()
 
-    def show_languages(self):
+    def set_width(self):
+        Screen.cls()
+        print("{}?".format(Screen.req_word("req_width", self.lang)))
+        for i in range(10):
+            try:
+                print("\n{}:  ".format(Screen.req_word("input", self.lang)), end='')
+                self.screen_width = int(input())
+                self.screen_height = int(self.screen_width*1.065)
+            except ValueError:
+                print("{} 600 {} 950".format(Screen.req_word("inv_option1", self.lang), 
+                                                          Screen.req_word("inv_option2", self.lang)))
+                continue
+            if self.screen_width > 950 or self.screen_width < 600:
+                print("{} 600 {} 950".format(Screen.req_word("inv_option1", self.lang), 
+                                                          Screen.req_word("inv_option2", self.lang)))
+                continue
+            break
+        else:
+            print("{}".format(Screen.req_word("critical", self.lang)))
+            Screen.quit()
+
+    def show_languages(self, bg=False):
         # LANG BUTTON
         for i in range(len(self.langs)+1):
-            pygame.draw.rect(self.screen, self.langb[i].color, [self.langb[i].x, self.langb[i].y, self.langb[i].width, self.langb[i].height])
+            if bg:
+                pygame.draw.rect(self.screen, self.langb[i].color, [self.langb[i].x, self.langb[i].y, self.langb[i].width, self.langb[i].height])
             if self.langb[i].check(pygame.mouse.get_pos()) and i and self.langs[i-1] != self.lang:
                 self.lang = Screen.req_word("short_name", self.langs[i-1])
 
@@ -452,8 +490,9 @@ class Screen:
         for i in range(self.size*self.size):
             self.tiles[i].value = 0
         self.score = 0
-        while not self.stack.empty():
-            self.stack.pop()
+        if self.size_of_stack:
+            while not self.stack.empty():
+                self.stack.pop()
 
     def find(self):
         i = 0
@@ -469,7 +508,6 @@ class Screen:
         try:
             text_surface = font.render(text, True, color)
         except AttributeError:
-            print("ERROR at def text_surface")
             font = pygame.font.SysFont("Arial", 50)
             text_surface = font.render(text, True, color)
         finally:
