@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.4.1] - 2019-02-19
+### Added
+- execution (.exe) file
+- file with fonts
+
+### Fixed
+- Fonts work correctly
+
 ## [0.4.0] - 2019-02-11
 ### Added
 - Settings are available in all 3 languages

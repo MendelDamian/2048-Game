@@ -112,8 +112,9 @@ class Screen:
                     elif event.key == self.backspace_key:
                         return "back"
 
-    def message_display(self, text, x, y, font_size, color=(0, 0, 0), font="verdana", pos="center"):
-        font = pygame.font.SysFont(font, font_size)
+    def message_display(self, text, x, y, font_size, color=(0, 0, 0), font="Verdana", pos="center"):
+        font = "fonts\\{}.ttf".format(font)
+        font = pygame.font.Font(font, font_size)
         text_surf, text_rect = Screen.text_objects(text, font, color)
         text_rect.center = (x, y)
         if pos == "left":
@@ -225,16 +226,15 @@ class Screen:
             pygame.draw.rect(self.screen, play.color, [play.x, play.y, play.width, play.height])
             self.message_display(Screen.req_word(play.text, self.lang), play.x+0.5*play.width,
                                  play.y+0.475*play.height, 50, (0, 0, 0), "DejaVu Sans Mono")
+
             if play.check(pygame.mouse.get_pos()):
                 self.game = True
-
             # EXIT BUTTON
             pygame.draw.rect(self.screen, exitb.color, [exitb.x, exitb.y, exitb.width, exitb.height])
             self.message_display(Screen.req_word(exitb.text, self.lang), exitb.x+0.5*play.width,
                                  exitb.y+0.475*exitb.height, 50, (0, 0, 0), "DejaVu Sans Mono")
             if exitb.check(pygame.mouse.get_pos()):
                 Screen.quit()
-
             self.show_languages()
 
             self.clock.tick(self.fps)
@@ -266,22 +266,22 @@ class Screen:
             # UNDO
             if self.size_of_stack:
                 self.message_display(text=Screen.req_word("undo", self.lang)+": {}".format(self.stack.size()//len(self.tiles)),
-                                     x=20, y=(self.screen_height-self.screen_width+10)/2, font_size=30,
+                                     x=20, y=(self.screen_height-self.screen_width+10)/2, font="DejaVu Sans Mono", font_size=30,
                                      color=(69, 69, 69), pos="left")
             else:
                 self.message_display(text=Screen.req_word("undo", self.lang)+": 0",
-                                     x=20, y=(self.screen_height-self.screen_width+10)/2, font_size=30,
+                                     x=20, y=(self.screen_height-self.screen_width+10)/2, font="DejaVu Sans Mono", font_size=30,
                                      color=(69, 69, 69), pos="left")
 
             # SCORE
             self.message_display(text=Screen.req_word("score", self.lang)+": {}".format(self.score),
-                                 x=self.screen_width*0.5, y=(self.screen_height-self.screen_width+10)/2, font_size=30,
-                                 color=(69, 69, 69))
+                                 x=self.screen_width*0.5, y=(self.screen_height-self.screen_width+10)/2,
+                                 font="DejaVu Sans Mono", font_size=30, color=(69, 69, 69))
 
             # BEST SCORE
             self.message_display(text=Screen.req_word("best", self.lang)+": {}".format(self.best),
-                                 x=self.screen_width-20, y=(self.screen_height-self.screen_width+10)/2, font_size=30,
-                                 color=(69, 69, 69), pos="right")
+                                 x=self.screen_width-20, y=(self.screen_height-self.screen_width+10)/2,
+                                 font="DejaVu Sans Mono", font_size=30, color=(69, 69, 69), pos="right")
 
             self.clock.tick(self.fps)
             pygame.display.update()
@@ -522,8 +522,12 @@ class Screen:
     @classmethod
     def quit(cls):
         pygame.quit()
-        quit()
 
     @classmethod
     def cls(cls):
         system('cls' if name=='nt' else 'clear')
+
+    #@classmethod
+    #def save_log(cls):
+    #    textfile=open(expanduser('~/filename'))
+    #    print(textfile)
