@@ -9,9 +9,6 @@ In the 2048 game, you have to combine blocks of the same value into one block of
 - Backspace - Undo your max 3 last moves
 - ESC - Pausing/leaving from the game
 
-## Important
-If any problems with font I recommend to install the [Clear Sans font](https://01.org/clear-sans)
-
 ## Currently working on
 - Highest score won't reset every time you close game
 
@@ -44,3 +41,7 @@ If any problems with font I recommend to install the [Clear Sans font](https://0
   - Folder which contains languages
 - Images folder
   - Folder with images
+- Fonts folder
+  - Folder with fonts
+- 2048 Game.exe
+  - Execution file
