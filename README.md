@@ -2,7 +2,7 @@
 Developer: [Damian Mendel](https://github.com/MendelDamian)
 Start: 22-12-2018
 ## How to play
-In the 2048 game, you have to combine blocks of the same value into one block of twice the value, taking care that the entire board is not filled.
+In the 2048 game, you have to combine blocks of the same value into one block of twice the value, taking care that the entire board is not filled. Download project and run "2048 Game.exe". Thanks for every download :)
 
 ## Control
 - Arrow keys - Moving blocks
