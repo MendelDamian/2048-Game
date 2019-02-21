@@ -1,5 +1,6 @@
 import pygame
 from os import listdir, path, system, name
+import sys
 from Button import Button
 from Square import Square
 from Stack import Stack
@@ -7,24 +8,21 @@ from random import randint
 from xml.etree import ElementTree
 from time import sleep
 from os.path import isfile
+from configparser import ConfigParser
 
 
 class Screen:
 
     def __init__(self):
 
-        self.size_default = 4
-        self.theme_default = "Default"
-        self.lang_default = "en-GB"
-        self.size_of_stack_default = 3
-        self.screen_width_default = 800
-        self.screen_height_default = round(self.screen_width_default * 1.065)
+        self.config = ConfigParser()
+        self.config.read('config.ini')
 
-        self.size = 4
-        self.theme = "Default"
-        self.lang = "en-GB"
-        self.size_of_stack = 3
-        self.screen_width = 800
+        self.size = int(self.load_var("size"))
+        self.theme = self.load_var("theme")
+        self.lang = self.load_var("lang")
+        self.size_of_stack = int(self.load_var("size_of_stack"))
+        self.screen_width = int(self.load_var("screen_width"))
         self.screen_height = round(self.screen_width * 1.065)
 
         self.langs = []
@@ -41,7 +39,7 @@ class Screen:
         pygame.display.set_icon(self.icon)
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
 
-        self.fps = 60
+        self.fps = int(self.load_var("fps"))
         self.flags_img = []
         for num, img in enumerate(listdir("images\\flags")):
             self.flags_img.append(pygame.image.load("images\\flags\\" + img).convert())
@@ -62,11 +60,11 @@ class Screen:
 
         self.main_menu()
 
-        self.up_key = pygame.K_UP
-        self.left_key = pygame.K_LEFT
-        self.right_key = pygame.K_RIGHT
-        self.down_key = pygame.K_DOWN
-        self.backspace_key = pygame.K_BACKSPACE
+        self.up_key = self.load_var("up_key")
+        self.left_key = self.load_var("left_key")
+        self.right_key = self.load_var("right_key")
+        self.down_key = self.load_var("down_key")
+        self.backspace_key = self.load_var("backspace_key")
         self.width = (self.screen_width-40-10*(2*self.size-1))/self.size
         self.tiles = []
         self.score = 0
@@ -342,6 +340,21 @@ class Screen:
             print("\n{}:  ".format(Screen.req_word("input", self.lang)), end='')
             choice = input()
             if choice == "":
+                sett_list = {"size": self.size, "theme": self.theme, 
+                             "lang": self.lang, "size_of_stack": self.size_of_stack, 
+                             "screen_width": self.screen_width}
+                try:
+                    self.config.add_section('settings')
+                except:
+                    pass
+
+                for key, value in sett_list.items():
+                    self.config.set('settings', key, str(value))
+
+                with open('config.ini', 'w') as f:
+                    self.config.write(f)
+                    f.close()
+
                 break
             elif choice == "1":
                 self.set_size()
@@ -502,6 +515,15 @@ class Screen:
             else:
                 i += 1
 
+    def load_var(self, option):
+        try:
+            return self.config.get("settings", option)
+        except:
+            try:
+                return self.config.get("default_settings", option)
+            except:
+                raise ValueError("No option {} in section \'default_settings\'".format(option))
+
     @classmethod
     def text_objects(cls, text, font, color):
         text_surface = 0
@@ -522,12 +544,8 @@ class Screen:
     @classmethod
     def quit(cls):
         pygame.quit()
+        sys.exit()
 
     @classmethod
     def cls(cls):
         system('cls' if name=='nt' else 'clear')
-
-    #@classmethod
-    #def save_log(cls):
-    #    textfile=open(expanduser('~/filename'))
-    #    print(textfile)

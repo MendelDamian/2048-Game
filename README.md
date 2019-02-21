@@ -16,15 +16,15 @@ In the 2048 game, you have to combine blocks of the same value into one block of
 - Log files
 - Sounds
 - Lose Screen
-- File with current settings and default settings
 - Continue button in menu
 - The drop-down language list
+- Load default settings
 
 ## Content
 - main.py
   - Executes the game loop
 - Screen.py
-  - File of Screen class that include information about window, handle events, appearing text and quiting the game nad makes it all works
+  - File of Screen class that include information about window, handle events, appearing text
 - Square.py
   - File of Square class that include information about a single square on the screen
 - Button.py
@@ -45,3 +45,5 @@ In the 2048 game, you have to combine blocks of the same value into one block of
   - Folder with fonts
 - 2048 Game.exe
   - Execution file
+- config.ini
+  - Contains current and default settings
