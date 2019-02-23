@@ -18,7 +18,6 @@ In the 2048 game, you have to combine blocks of the same value into one block of
 - Lose Screen
 - Continue button in menu
 - The drop-down language list
-- Load default settings
 
 ## Content
 - main.py

@@ -60,11 +60,11 @@ class Screen:
 
         self.main_menu()
 
-        self.up_key = self.load_var("up_key")
-        self.left_key = self.load_var("left_key")
-        self.right_key = self.load_var("right_key")
-        self.down_key = self.load_var("down_key")
-        self.backspace_key = self.load_var("backspace_key")
+        self.up_key = pygame.K_UP
+        self.left_key = pygame.K_LEFT
+        self.right_key = pygame.K_RIGHT
+        self.down_key = pygame.K_DOWN
+        self.backspace_key = pygame.K_BACKSPACE
         self.width = (self.screen_width-40-10*(2*self.size-1))/self.size
         self.tiles = []
         self.score = 0
@@ -327,6 +327,7 @@ class Screen:
             pygame.display.update()
 
     def settings(self):
+        changed = False
         while True:
             Screen.cls()
             print("\n{}:\n".format(Screen.req_word("current_settings", self.lang)))
@@ -334,38 +335,91 @@ class Screen:
             print("2) {}: {}".format(Screen.req_word("theme", self.lang), self.theme))
             print("3) {}: {}".format(Screen.req_word("language", self.lang), self.lang))
             print("4) {}: {}".format(Screen.req_word("undo_moves", self.lang), self.size_of_stack))
-            print("5) {}: {}".format(Screen.req_word("width", self.lang), self.screen_width))
+            print("5) {}".format(Screen.req_word("advanced_options", self.lang)))
+            print("\n6) {}".format(Screen.req_word("save_settings", self.lang)))
             print("\n{}".format(Screen.req_word("instrucion", self.lang)))
 
             print("\n{}:  ".format(Screen.req_word("input", self.lang)), end='')
             choice = input()
-            if choice == "":
-                sett_list = {"size": self.size, "theme": self.theme, 
-                             "lang": self.lang, "size_of_stack": self.size_of_stack, 
-                             "screen_width": self.screen_width}
-                try:
-                    self.config.add_section('settings')
-                except:
-                    pass
-
-                for key, value in sett_list.items():
-                    self.config.set('settings', key, str(value))
-
-                with open('config.ini', 'w') as f:
-                    self.config.write(f)
-                    f.close()
-
+            if not choice:
+                if changed:
+                    for i in range(10):
+                        Screen.cls()
+                        print("\n{}".format(Screen.req_word("req_change", self.lang)))
+                        print("\n1) {}".format(Screen.req_word("yes", self.lang)))
+                        print("2) {}".format(Screen.req_word("no", self.lang)))
+                        print("\n{}:  ".format(Screen.req_word("input", self.lang)), end='')
+                        choice = input()
+                        if choice is "1":
+                            sett_list = {"size": self.size, "theme": self.theme, 
+                                         "lang": self.lang, "size_of_stack": self.size_of_stack}
+                            self.save(sett_list)
+                        elif choice is "2":
+                            pass
+                        else:
+                            continue
+                        break
+                    else:
+                        print("{}".format(Screen.req_word("critical", self.lang)))
+                        Screen.quit()
                 break
-            elif choice == "1":
+            elif choice is "1":
                 self.set_size()
-            elif choice == "2":
+            elif choice is "2":
                 self.select_theme()
-            elif choice == "3":
+            elif choice is "3":
                 self.set_lang()
-            elif choice == "4":
+            elif choice is "4":
                 self.set_stack()
-            elif choice == "5":
+            elif choice is "5":
+                self.advanced_settings()
+            elif choice is "6":
+                if changed:
+                    changed = False
+                sett_list = {"size": self.size, "theme": self.theme, 
+                             "lang": self.lang, "size_of_stack": self.size_of_stack}
+                self.save(sett_list)
+                continue
+            if not changed:
+                changed = True
+
+    def advanced_settings(self):
+        while True:
+            Screen.cls()
+            print("\n{}:\n".format(Screen.req_word("current_settings", self.lang)))
+            print("1) {}: {}".format(Screen.req_word("width", self.lang), self.screen_width))
+            print("2) {}".format(Screen.req_word("load_default", self.lang)))
+            print("\n{}".format(Screen.req_word("instrucion", self.lang)))
+
+            print("\n{}:  ".format(Screen.req_word("input", self.lang)), end='')
+            choice = input()
+
+            if not choice:
+                break
+            elif choice is "1":
                 self.set_width()
+            elif choice is "2":
+                self.load_default()
+
+    def save(self, sett_list):
+        try:
+            self.config.add_section('settings')
+        except:
+            pass
+
+        for key, value in sett_list.items():
+            self.config.set('settings', key, str(value))
+
+        with open('config.ini', 'w') as f:
+            self.config.write(f)
+            f.close()
+
+    def load_default(self):
+        self.size = int(self.config.get('default_settings', "size"))
+        self.theme = self.config.get('default_settings', "theme")
+        self.lang = self.config.get('default_settings', "lang")
+        self.size_of_stack = int(self.config.get('default_settings', "size_of_stack"))
+        self.screen_width = int(self.config.get('default_settings', "screen_width"))
 
     def set_size(self):
         Screen.cls()
@@ -486,6 +540,10 @@ class Screen:
                 pygame.draw.rect(self.screen, self.langb[i].color, [self.langb[i].x, self.langb[i].y, self.langb[i].width, self.langb[i].height])
             if self.langb[i].check(pygame.mouse.get_pos()) and i and self.langs[i-1] != self.lang:
                 self.lang = Screen.req_word("short_name", self.langs[i-1])
+                self.config.set('settings', "lang", str(self.langs[i-1]))
+                with open('config.ini', 'w') as f:
+                    self.config.write(f)
+                    f.close()
 
         # Names of languages
         s = 0

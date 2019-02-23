@@ -30,5 +30,11 @@
         <inv_option1>Choice the number between</inv_option1>
         <inv_option2>and</inv_option2>
         <critical>Critical ERROR or user in an idiot</critical>
+        <advanced_options>Advanced options</advanced_options>
+        <save_settings>Save settings</save_settings>
+        <load_default>Load default settings</load_default>
+        <req_change>Do you want to save your settings?</req_change>
+        <yes>Yes</yes>
+        <no>No</no>
     </en-GB>
 </lang>

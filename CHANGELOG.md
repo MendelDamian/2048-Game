@@ -1,6 +1,15 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.4.3] - 2019-02-23
+### Added
+- Advanced settings
+- New option in menu - save settings, load default settings
+
+### Fixed
+- Moving is now possible
+- Program remembers language changes which were done in GUI
+
 ## [0.4.2] - 2019-02-21
 ### Added
 - Config file with current and default settings

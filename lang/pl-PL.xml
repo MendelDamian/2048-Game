@@ -30,5 +30,11 @@
         <inv_option1>Wybierz liczbe pomiedzy</inv_option1>
         <inv_option2>a</inv_option2>
         <critical>Krytyczny BLAD lub uzytkownik jest debilem</critical>
+        <advanced_options>Ustawienia zaawansowane</advanced_options>
+        <save_settings>Zapisz ustawienia</save_settings>
+        <load_default>Wczytaj ustawienia domyslne</load_default>
+        <req_change>Chcesz zapisac ustawienia?</req_change>
+        <yes>Tak</yes>
+        <no>Nie</no>
     </pl-PL>
 </lang>
