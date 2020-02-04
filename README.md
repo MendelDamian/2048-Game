@@ -9,16 +9,6 @@ In the 2048 game, you have to combine blocks of the same value into one block of
 - Backspace - Undo your max 3 last moves
 - ESC - Pausing/leaving from the game
 
-## Currently working on
-- Highest score won't reset every time you close game
-
-## To-do list
-- Log files
-- Sounds
-- Lose Screen
-- Continue button in menu
-- The drop-down language list
-
 ## Content
 - main.py
   - Executes the game loop
