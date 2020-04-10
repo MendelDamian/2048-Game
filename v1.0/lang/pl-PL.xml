@@ -1,0 +1,40 @@
+<lang>
+    <pl-PL>
+        <full_name>Polski</full_name>
+        <short_name>pl-PL</short_name>
+        <play>NOWA GRA</play>
+        <settings>USTAWIENIA</settings>
+        <exit>WYJŚCIE</exit>
+        <selected>Wybrany</selected>
+        <score>Wynik</score>
+        <best>Najlepszy</best>
+        <pause>PAUZA</pause>
+        <resume>WZNÓW</resume>
+        <back>POWRÓT</back>
+        <end>ZAKOŃCZ</end>
+        <undo>Cofnij</undo>
+        <current_settings>Obecne ustawienia</current_settings>
+        <size>Wielkosc</size>
+        <theme>Motyw</theme>
+        <language>Jezyk</language>
+        <undo_moves>Cofniecia</undo_moves>
+        <width>Szerokosc okna</width>
+        <instrucion>Jezeli chcesz cos zmienic to podaj cyfre opcji, jezeli nie - nacisnij Enter</instrucion>
+        <input>Wybor</input>
+        <wrong_option>Niepoprawny wybor</wrong_option>
+        <req_size>Jak duza ma byc plansza</req_size>
+        <req_theme>Ktorego motywu chcesz uzyc</req_theme>
+        <req_lang>Ktorego jezyka chcesz uzywac</req_lang>
+        <req_stack>Jak wiele cofniec chcesz posiadac</req_stack>
+        <req_width>Jak wielkie ma byc okno z gra</req_width>
+        <inv_option1>Wybierz liczbe pomiedzy</inv_option1>
+        <inv_option2>a</inv_option2>
+        <critical>Krytyczny BLAD lub uzytkownik jest debilem</critical>
+        <advanced_options>Ustawienia zaawansowane</advanced_options>
+        <save_settings>Zapisz ustawienia</save_settings>
+        <load_default>Wczytaj ustawienia domyslne</load_default>
+        <req_change>Chcesz zapisac ustawienia?</req_change>
+        <yes>Tak</yes>
+        <no>Nie</no>
+    </pl-PL>
+</lang>

@@ -1,8 +1,0 @@
-eg.
-16 255 153 98
-
-where:
-16 - the value of the tile
-255 - Value of Red in RGB system (0-255)
-153 - Value of Green in RGB system (0-255)
-98 - Value of Blue in RGB system (0-255)
