@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2020-04-09
+### Featues
+- Correct resizing window
+- Simplified code
+
 ## [2.0] - 2020-04-09
 ### Started working on version 2.0
 ### Featues
@@ -9,6 +14,9 @@ All notable changes to this project will be documented in this file.
 
 ### Bugs
 - Resizing doesn't update tiles position
+
+### Removed
+- placing version of application in CHANGELOG
 
 ## [0.4.3] - 2019-02-23
 ### Added
