@@ -1,11 +1,8 @@
 import pygame
+from random import randint
 from Tile import Tile
-from global_const import RESOLUTION, MONITOR_RESOLUTION, BOARD_SIZE
+from global_const import *
 
-FPS = 60
-COLORS = {
-    'BACKGROUND': (199, 183, 171),
-}
 RESIZABLE_FLAGS = pygame.RESIZABLE | pygame.HWSURFACE | pygame.DOUBLEBUF
 FULLSCREEN_FLAGS = pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF
 
@@ -36,8 +33,10 @@ class Game:
             # Video resize
             if event.type == pygame.VIDEORESIZE:
                 if not self.fullscreen:
-                    self.screen = pygame.display.set_mode((event.w, event.h), RESIZABLE_FLAGS)
-                    self.update_tiles_position(width=event.w, height=event.h)
+                    new_width = event.w if event.w >= MIN_WIDTH else MIN_WIDTH
+                    new_height = event.h if event.h >= MIN_HEIGHT else MIN_HEIGHT
+                    self.screen = pygame.display.set_mode((new_width, new_height), RESIZABLE_FLAGS)
+                    self.update_tiles_position(width=new_width, height=new_height)
 
             if event.type == pygame.KEYDOWN:
                 # Check if alt is pressed
@@ -71,9 +70,38 @@ class Game:
         """
         [[col.set_pos(self.fullscreen, width, height) for col in row] for row in self.board]
 
-    def clear_board(self):
-        """Clear board"""
-        self.board *= 0
+    def board_random(self, amount=1):
+        """Put a value 2 in random free space. 
+        
+        Args:
+            amount (int, optional, default=1): Amount of values to generate
+
+        Returns:
+            BOOL: Returns True if it completed successfully, else False
+        """
+        for _ in range(amount):
+            if not self.check_if_lose():
+                while True:
+                    row = randint(0, BOARD_SIZE)
+                    col = randint(0, BOARD_SIZE)
+
+                    if not self.board[row][col].value:
+                        self.board[row][col].value = 2
+                        break
+            else:
+                return False
+        return True
+
+    def check_if_lose(self):
+        """Checks if a board is full
+        
+        Returns:
+            BOOL: Return True if board is full else False
+        """
+        for row in self.board:
+            for col in row:
+                return False
+        return True
 
     def update(self, *args, **kwargs):
         """Code which update screen"""
