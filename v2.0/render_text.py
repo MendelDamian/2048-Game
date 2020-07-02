@@ -1,7 +1,7 @@
 import pygame
 
 
-def render_text(screen, text, pos, color=(0, 0, 0), font_name='Comic Sans MS', font_size=30):
+def render_text(screen, text, pos, color=(0, 0, 0), font_name='Century Gothic', font_size=36):
     '''Function to draw on a surface
     
     Args:

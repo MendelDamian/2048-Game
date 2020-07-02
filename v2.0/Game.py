@@ -1,5 +1,5 @@
 import pygame
-from random import randint
+import random
 from Tile import Tile
 from global_const import *
 
@@ -15,6 +15,7 @@ class Game:
         self.screen = pygame.display.set_mode(RESOLUTION, RESIZABLE_FLAGS)
 
         self.board = [[Tile() for _ in range(BOARD_SIZE)] for _ in range(BOARD_SIZE)]
+        self.board_random(2)
 
     def run(self):
         """Main game loop"""
@@ -38,6 +39,7 @@ class Game:
                     self.screen = pygame.display.set_mode((new_width, new_height), RESIZABLE_FLAGS)
                     self.update_tiles_position(width=new_width, height=new_height)
 
+            # KeyDown events
             if event.type == pygame.KEYDOWN:
                 # Check if alt is pressed
                 pressed = pygame.key.get_pressed()
@@ -54,6 +56,11 @@ class Game:
                     else:
                         self.screen = pygame.display.set_mode(RESOLUTION, RESIZABLE_FLAGS)
                     self.update_tiles_position()
+
+                # Move event
+                if event.key in [pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT]:
+                    # self.move(event.key)
+                    print(event.key)
 
     def draw(self):
         """Draws surface"""
@@ -80,17 +87,15 @@ class Game:
             BOOL: Returns True if it completed successfully, else False
         """
         for _ in range(amount):
-            if not self.check_if_lose():
-                while True:
-                    row = randint(0, BOARD_SIZE)
-                    col = randint(0, BOARD_SIZE)
-
-                    if not self.board[row][col].value:
-                        self.board[row][col].value = 2
-                        break
-            else:
+            if self.check_if_lose():
                 return False
-        return True
+            while True:
+                row = random.randint(0, BOARD_SIZE - 1)
+                col = random.randint(0, BOARD_SIZE - 1)
+                if self.board[row][col].value != 0:
+                    continue
+                self.board[row][col].value = 2
+                break
 
     def check_if_lose(self):
         """Checks if a board is full
@@ -105,5 +110,6 @@ class Game:
 
     def update(self, *args, **kwargs):
         """Code which update screen"""
-        pygame.display.update(*args, **kwargs)
+        # pygame.display.update(*args, **kwargs)
+        pygame.display.flip()
         self.clock.tick(FPS)

@@ -3,7 +3,7 @@ import os
 import sys
 from Game import Game
 from global_const import *
-
+# TODO: Always have the 4:3 ratio
 
 def main():
     # Center window when show up
@@ -15,8 +15,13 @@ def main():
     # Setup window
     pygame.display.set_caption(CAPTION)
 
-    game = Game()
-    game.run()
+    # Game loop
+    Game().run()
+
+    # Exit
+    pygame.quit()
+    pygame.font.quit()
+    sys.exit()
 
 
 if __name__ == '__main__':
