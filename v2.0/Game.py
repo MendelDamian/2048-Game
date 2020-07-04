@@ -1,4 +1,5 @@
 import pygame
+import numpy as np
 import random
 from Tile import Tile
 from global_const import *
@@ -14,7 +15,10 @@ class Game:
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode(RESOLUTION, RESIZABLE_FLAGS)
 
-        self.board = [[Tile() for _ in range(BOARD_SIZE)] for _ in range(BOARD_SIZE)]
+        self.tiles_background = [[Tile() for _ in range(BOARD_SIZE)] 
+                                 for _ in range(BOARD_SIZE)]
+        self.board = np.array([[Tile() for _ in range(BOARD_SIZE)] 
+                               for _ in range(BOARD_SIZE)])
         self.board_random(2)
 
     def run(self):
@@ -34,10 +38,16 @@ class Game:
             # Video resize
             if event.type == pygame.VIDEORESIZE:
                 if not self.fullscreen:
-                    new_width = event.w if event.w >= MIN_WIDTH else MIN_WIDTH
-                    new_height = event.h if event.h >= MIN_HEIGHT else MIN_HEIGHT
-                    self.screen = pygame.display.set_mode((new_width, new_height), RESIZABLE_FLAGS)
-                    self.update_tiles_position(width=new_width, height=new_height)
+                    new_width = event.w if event.w >= MIN_WIDTH else \
+                        MIN_WIDTH
+                    new_height = event.h if event.h >= MIN_HEIGHT else \
+                        MIN_HEIGHT
+                    self.screen = pygame.display.set_mode(
+                        (new_width, new_height), 
+                        RESIZABLE_FLAGS)
+                    self.update_tiles_position(
+                        width=new_width, 
+                        height=new_height)
 
             # KeyDown events
             if event.type == pygame.KEYDOWN:
@@ -52,21 +62,53 @@ class Game:
                 if event.key == pygame.K_f:
                     self.fullscreen = not self.fullscreen
                     if self.fullscreen:
-                        self.screen = pygame.display.set_mode(MONITOR_RESOLUTION, FULLSCREEN_FLAGS)
+                        self.screen = pygame.display.set_mode(
+                            MONITOR_RESOLUTION, 
+                            FULLSCREEN_FLAGS)
                     else:
-                        self.screen = pygame.display.set_mode(RESOLUTION, RESIZABLE_FLAGS)
+                        self.screen = pygame.display.set_mode(
+                            RESOLUTION, 
+                            RESIZABLE_FLAGS)
                     self.update_tiles_position()
 
                 # Move event
-                if event.key in [pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT]:
-                    # self.move(event.key)
-                    print(event.key)
+                if event.key in [pygame.K_UP, pygame.K_DOWN, 
+                                 pygame.K_LEFT, pygame.K_RIGHT]:
+                    self.move(event.key)
+                    self.board_random()
+
+    def move(self, direction):
+        '''Movement
+        
+        Args:
+            direction (pygame.KEY): Pressed key (K_UP, K_DOWN, K_LEFT, K_RIGHT)
+        '''
+        if direction in (pygame.K_UP, pygame.K_DOWN):
+            self.board = self.board.T
+        if direction in (pygame.K_RIGHT, pygame.K_DOWN):
+            self.board = self.board[:,::-1]
+
+        for i in range(BOARD_SIZE):
+            for j in range(BOARD_SIZE - 1):
+                for k in range(j + 1, BOARD_SIZE):
+                    if self.board[i][k].value == 0:
+                        continue
+                    if self.board[i][j].value == 0 or \
+                       self.board[i][j].value == self.board[i][k].value:
+                        self.board[i][j].value += self.board[i][k].value
+                        self.board[i][k].value = 0
+
+        if direction in (pygame.K_RIGHT, pygame.K_DOWN):
+            self.board = self.board[:,::-1]
+        if direction in (pygame.K_UP, pygame.K_DOWN):
+            self.board = self.board.T
 
     def draw(self):
         """Draws surface"""
         self.screen.fill(COLORS['BACKGROUND'])
         # Draw tiles
-        [[col.draw(self.screen) for col in row] for row in self.board]
+        [[col.draw(self.screen) for col in row] 
+         for row in self.board]
 
     def update_tiles_position(self, width=0, height=0):
         """Update tiles position
@@ -75,19 +117,21 @@ class Game:
             width (int, optional, default=0): Surface width
             height (int, optional, default=0): Surface height
         """
-        [[col.set_pos(self.fullscreen, width, height) for col in row] for row in self.board]
+        [[col.set_pos(self.fullscreen, width, height) for col in row] 
+         for row in self.board]
 
     def board_random(self, amount=1):
-        """Put a value 2 in random free space. 
+        '''Put value '2' in random place in self.board
         
         Args:
-            amount (int, optional, default=1): Amount of values to generate
-
+            amount (int, optional): amount of values to place
+        
         Returns:
-            BOOL: Returns True if it completed successfully, else False
-        """
+            bool: return true if success else false
+        '''
         for _ in range(amount):
             if self.check_if_lose():
+                self.play = False
                 return False
             while True:
                 row = random.randint(0, BOARD_SIZE - 1)
@@ -96,6 +140,7 @@ class Game:
                     continue
                 self.board[row][col].value = 2
                 break
+            return True
 
     def check_if_lose(self):
         """Checks if a board is full
@@ -105,11 +150,11 @@ class Game:
         """
         for row in self.board:
             for col in row:
-                return False
+                if not col.value:
+                    return False
         return True
 
-    def update(self, *args, **kwargs):
+    def update(self):
         """Code which update screen"""
-        # pygame.display.update(*args, **kwargs)
         pygame.display.flip()
         self.clock.tick(FPS)
