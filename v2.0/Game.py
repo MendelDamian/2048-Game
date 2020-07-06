@@ -15,6 +15,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode(RESOLUTION, RESIZABLE_FLAGS)
 
+        # Needed for tiles background
         self.tiles_background = [[Tile() for _ in range(BOARD_SIZE)] 
                                  for _ in range(BOARD_SIZE)]
         self.board = np.array([[Tile() for _ in range(BOARD_SIZE)] 
@@ -93,10 +94,14 @@ class Game:
                 for k in range(j + 1, BOARD_SIZE):
                     if self.board[i][k].value == 0:
                         continue
+                    if self.board[i][j].value != 0 and \
+                       self.board[i][j].value != self.board[i][k].value:
+                        break
                     if self.board[i][j].value == 0 or \
                        self.board[i][j].value == self.board[i][k].value:
                         self.board[i][j].value += self.board[i][k].value
                         self.board[i][k].value = 0
+
 
         if direction in (pygame.K_RIGHT, pygame.K_DOWN):
             self.board = self.board[:,::-1]

@@ -54,10 +54,10 @@ class Tile:
         start_x = int(window_size[0] / 2 - (BOARD_SIZE / 2 * Tile._tile_size))
         start_y = int(window_size[1] / 2 - (BOARD_SIZE / 2 * Tile._tile_size))
         # Update X's and Y's
-        self.x1 = start_x + (tile_space + Tile._tile_size) * \
-            (self.id % BOARD_SIZE)
-        self.y1 = start_y + (tile_space + Tile._tile_size) * \
-            (self.id // BOARD_SIZE)
+        self.x1 = start_x + (tile_space + Tile._tile_size) \
+            * (self.id % BOARD_SIZE)
+        self.y1 = start_y + (tile_space + Tile._tile_size) \
+            * (self.id // BOARD_SIZE)
         # Cordinates of beggining and end
         self.cords = (self.x1, self.y1, Tile._tile_size, Tile._tile_size)
 
